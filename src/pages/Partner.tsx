@@ -58,11 +58,7 @@ const STEPS = [
 
 const PARTNER_TYPES = ['Broadcast production', 'Tournament organizer', 'Brand / sponsor', 'Creator', 'Other']
 
-function encode(data: Record<string, string>) {
-  return Object.keys(data)
-    .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(data[k])}`)
-    .join('&')
-}
+const W3F_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? ''
 
 export default function Partner() {
   useReveal()
@@ -71,20 +67,26 @@ export default function Partner() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
-    const data = new FormData(form)
-    const payload: Record<string, string> = { 'form-name': 'partner' }
-    data.forEach((value, key) => {
-      payload[key] = typeof value === 'string' ? value : ''
-    })
+    const d = new FormData(form)
     setStatus('sending')
     try {
-      const res = await fetch('/', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode(payload),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: W3F_KEY,
+          subject: `New Partner Enquiry — ${d.get('name')}`,
+          from_name: 'ZYVORA Partner Form',
+          'Name': d.get('name'),
+          'Organization': d.get('organization') || '—',
+          'Email': d.get('email'),
+          'Partner Type': d.get('partner_type'),
+          'Message': d.get('message'),
+        }),
       })
-      setStatus(res.ok ? 'ok' : 'error')
-      if (res.ok) form.reset()
+      const json = await res.json()
+      setStatus(json.success ? 'ok' : 'error')
+      if (json.success) form.reset()
     } catch {
       setStatus('error')
     }
@@ -205,21 +207,7 @@ export default function Partner() {
               <p>We&rsquo;ll be in touch shortly. In the meantime, feel free to reach us on Discord.</p>
             </div>
           ) : (
-            <form
-              className="form reveal"
-              name="partner"
-              method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
-            >
-              <input type="hidden" name="form-name" value="partner" />
-              <p hidden>
-                <label>
-                  Don&rsquo;t fill this out: <input name="bot-field" />
-                </label>
-              </p>
-
+            <form className="form reveal" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="field">
                   <label htmlFor="name">Your name</label>
