@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Toast } from '../components/Toast'
 import { Arrow } from '../components/Icons'
 import { useReveal } from '../hooks/useReveal'
 
@@ -63,6 +64,7 @@ const W3F_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '97995862-6697-4e79-9bfc-c
 export default function Partner() {
   useReveal()
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
+  const closeToast = useCallback(() => setStatus('idle'), [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -201,12 +203,13 @@ export default function Partner() {
             <p>Tell us a little about what you&rsquo;re working on and we&rsquo;ll get back to you.</p>
           </div>
 
-          {status === 'ok' ? (
-            <div className="form-success reveal" role="status">
-              <strong>Thanks — message received.</strong>
-              <p>We&rsquo;ll be in touch shortly. In the meantime, feel free to reach us on Discord.</p>
-            </div>
-          ) : (
+          {status === 'ok' && (
+            <Toast
+              message="Message received!"
+              sub="We'll be in touch shortly."
+              onClose={closeToast}
+            />
+          )}
             <form className="form reveal" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="field">
@@ -252,7 +255,6 @@ export default function Partner() {
                 <Arrow />
               </button>
             </form>
-          )}
         </div>
       </section>
     </main>

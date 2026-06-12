@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { Toast } from '../components/Toast'
 import { Arrow } from '../components/Icons'
 import { useReveal } from '../hooks/useReveal'
 
@@ -41,6 +42,7 @@ const W3F_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '97995862-6697-4e79-9bfc-c
 export default function Play() {
   useReveal()
   const [status, setStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle')
+  const closeToast = useCallback(() => setStatus('idle'), [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -136,15 +138,13 @@ export default function Play() {
             </p>
           </div>
 
-          {status === 'ok' ? (
-            <div className="form-success reveal" role="status">
-              <strong>Application received.</strong>
-              <p>
-                Thanks for putting your name in. If you match what we&rsquo;re looking for, we&rsquo;ll
-                reach out about a tryout. Keep grinding.
-              </p>
-            </div>
-          ) : (
+          {status === 'ok' && (
+            <Toast
+              message="Details received!"
+              sub="We'll review your application and get back to you shortly."
+              onClose={closeToast}
+            />
+          )}
             <form className="form reveal" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="field">
@@ -212,7 +212,6 @@ export default function Play() {
                 <Arrow />
               </button>
             </form>
-          )}
         </div>
       </section>
     </main>
