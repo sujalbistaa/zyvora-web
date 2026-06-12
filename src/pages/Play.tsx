@@ -36,7 +36,7 @@ const PERKS = [
 ]
 
 const DEVICES = ['Android phone', 'iPhone', 'Tablet', 'Other']
-const W3F_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? ''
+const W3F_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '97995862-6697-4e79-9bfc-cbc68388cf53'
 
 export default function Play() {
   useReveal()
