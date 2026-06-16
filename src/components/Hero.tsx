@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Arrow } from './Icons'
 
-const MARQUEE_ITEMS = ['Esports', 'Room automation', 'Broadcast', 'Creator sites', 'Official kit', 'Tournaments']
-
 export default function Hero() {
   return (
     <section className="hero-forge">
@@ -31,7 +29,7 @@ export default function Hero() {
             <Link className="btn btn-molten" to="/players">
               Join the roster <Arrow />
             </Link>
-            <Link className="btn forge-ghost" to="/partner">
+            <Link className="btn btn-ghost" to="/partner">
               Partner with us
             </Link>
           </div>
@@ -56,35 +54,17 @@ export default function Hero() {
 
         {/* ── right: jersey ── */}
         <div className="forge-jersey-side">
-          <div className="forge-jersey-wrap">
-            <div className="forge-jersey-glow" aria-hidden="true" />
-            <img
-              src="/jersey-3.webp"
-              alt="ZYVORA official jersey"
-              className="forge-jersey-img"
-            />
-            <div className="forge-kit-tag">
-              <span className="forge-kit-label">Official Kit</span>
-              <Link to="/jerseys" className="forge-kit-link">
-                View all <Arrow />
-              </Link>
-            </div>
+          <img
+            src="/jersey-3.webp"
+            alt="ZYVORA official jersey"
+            className="forge-jersey-img"
+          />
+          <div className="forge-kit-tag">
+            <span className="forge-kit-label">Official Kit</span>
+            <Link to="/jerseys" className="forge-kit-link">
+              View all <Arrow />
+            </Link>
           </div>
-        </div>
-      </div>
-
-      {/* marquee transition */}
-      <div className="marquee" role="presentation">
-        <div className="marquee-track">
-          {[0, 1].map((g) => (
-            <div className="marquee-group" key={g} aria-hidden={g === 1 ? true : undefined}>
-              {MARQUEE_ITEMS.map((item, i) => (
-                <span className="marquee-item" key={i}>
-                  {item}<span className="sep">/</span>
-                </span>
-              ))}
-            </div>
-          ))}
         </div>
       </div>
     </section>
