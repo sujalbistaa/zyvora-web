@@ -1,27 +1,23 @@
 const capabilities = [
   {
     ref: '/ 01',
-    title: 'Official room automation',
-    body:
-      'Bots that handle the official Free Fire room end to end — lobby setup, slotting, live scoring, and results — so nothing is run by hand.',
+    title: 'Tournament automation',
+    body: 'Bots that handle the official room end to end — lobby setup, slotting, live scoring, and results — nothing run by hand.',
   },
   {
     ref: '/ 02',
     title: 'Broadcast partnerships',
-    body:
-      'We plug into broadcast production crews, feeding them clean, real-time data and overlays straight from the room.',
+    body: 'We plug into broadcast production crews, feeding them clean, real-time data and overlays straight from the room.',
   },
   {
     ref: '/ 03',
     title: 'Creator websites',
-    body:
-      'Custom-built sites for creators to showcase their content, grow an audience, and own their corner of the internet.',
+    body: 'Custom-built sites for creators to showcase their content, grow an audience, and own their corner of the internet.',
   },
   {
     ref: '/ 04',
     title: 'Merch storefronts',
-    body:
-      'A built-in store on every creator site — drop products, take orders, and keep the revenue.',
+    body: 'A built-in store on every creator site — drop products, take orders, and keep the revenue.',
   },
 ]
 
@@ -35,9 +31,8 @@ export default function Work() {
           </div>
           <h2 className="fx-head">Two things, done properly.</h2>
           <p>
-            We don&rsquo;t run the events &mdash; we build the automation that keeps official Free
-            Fire rooms running for the productions that broadcast them, and the websites that let
-            creators sell their merch.
+            We build the automation that keeps official esports rooms running for the productions
+            that broadcast them, and the websites that let creators sell their merch.
           </p>
         </div>
 

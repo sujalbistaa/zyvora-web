@@ -2,17 +2,11 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Arrow } from './Icons'
 
-type Spark = {
-  left: string
-  size: string
-  duration: string
-  delay: string
-}
+type Spark = { left: string; size: string; duration: string; delay: string }
 
-const MARQUEE_ITEMS = ['Free Fire', 'Room automation', 'Broadcast', 'Creator sites', 'Merch']
+const MARQUEE_ITEMS = ['Esports', 'Room automation', 'Broadcast', 'Creator sites', 'Jerseys', 'Tournaments']
 
 export default function Hero() {
-  // Rising ember particles, generated once. Honors reduced-motion.
   const sparks = useMemo<Spark[]>(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return []
@@ -35,13 +29,7 @@ export default function Hero() {
           <span
             key={i}
             className="spark"
-            style={{
-              left: s.left,
-              width: s.size,
-              height: s.size,
-              animationDuration: s.duration,
-              animationDelay: s.delay,
-            }}
+            style={{ left: s.left, width: s.size, height: s.size, animationDuration: s.duration, animationDelay: s.delay }}
           />
         ))}
       </div>
@@ -50,37 +38,27 @@ export default function Hero() {
         <div className="hero-watermark" aria-hidden="true">
           <svg viewBox="0 0 30 30" fill="none">
             <path d="M15 1.5 27.5 8v14L15 28.5 2.5 22V8L15 1.5Z" stroke="#15171C" strokeWidth="0.7" />
-            <path
-              d="M9 10h12l-9 7h9"
-              stroke="#E8401F"
-              strokeWidth="1"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
+            <path d="M9 10h12l-9 7h9" stroke="#E8401F" strokeWidth="1" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
         </div>
 
         <div className="hero-center-content">
-        <h1 className="display reveal">
-          Forge the <span className="molten">future</span>.
-        </h1>
-
-        <div className="heatline heatline-center reveal" />
-
-        <p className="lede reveal">
-          ZYVORA builds the bots that automate official Free Fire rooms — partnering with broadcast
-          productions to run the lobby, scoring, and results — and crafts the websites where creators
-          sell their merch.
-        </p>
-
-        <div className="cta-row cta-center reveal">
-          <a className="btn btn-primary" href="#automation">
-            See how it works
-            <Arrow />
-          </a>
-          <Link className="btn btn-ghost" to="/partner">
-            Partner with us
-          </Link>
+          <h1 className="display reveal">
+            Forge the <span className="molten">future</span>.
+          </h1>
+          <div className="heatline heatline-center reveal" />
+          <p className="lede reveal">
+            ZYVORA builds the bots that run official esports rooms for broadcast productions,
+            and crafts the internet homes where creators grow their brand.
+          </p>
+          <div className="cta-row cta-center reveal">
+            <a className="btn btn-primary" href="#automation">
+              See how it works
+              <Arrow />
+            </a>
+            <Link className="btn btn-ghost" to="/partner">
+              Partner with us
+            </Link>
           </div>
         </div>
       </div>

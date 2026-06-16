@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { LogoMark, NepalMark } from './Icons'
+import { LogoMark } from './Icons'
 
 export default function Footer() {
   return (
@@ -14,28 +14,26 @@ export default function Footer() {
               </span>
             </div>
             <p>
-              We build the bots that automate official Free Fire rooms for broadcast productions
-              &mdash; and the websites where creators sell their merch.
+              We build the bots that automate official esports rooms for broadcast productions
+              &mdash; and the websites where creators grow their brand and sell their merch.
             </p>
-            <div className="nepal">
-              <NepalMark /> MADE IN NEPAL
-            </div>
           </div>
 
           <div className="foot-col">
-            <h5>Studio</h5>
-            <a href="/#work">What we do</a>
-            <a href="/#principles">How we work</a>
-            <Link to="/partner">Partner with us</Link>
-            <a href="#">Careers</a>
+            <h5>Navigate</h5>
+            <Link to="/tournaments">Tournaments</Link>
+            <Link to="/players">Players</Link>
+            <Link to="/creators">Creators</Link>
+            <Link to="/bots">Bots</Link>
+            <Link to="/jerseys">Jerseys</Link>
           </div>
 
           <div className="foot-col">
             <h5>What we build</h5>
             <a href="/#automation">Room automation</a>
-            <a href="/#automation">Broadcast partners</a>
-            <a href="/#work">Creator websites</a>
-            <a href="/#work">Merch storefronts</a>
+            <a href="/#automation">Broadcast overlay</a>
+            <Link to="/creators">Creator websites</Link>
+            <Link to="/creators">Merch storefronts</Link>
           </div>
 
           <div className="foot-col">
@@ -43,7 +41,7 @@ export default function Footer() {
             <a href="#">Discord</a>
             <a href="#">YouTube</a>
             <a href="#">Instagram</a>
-            <Link to="/partner#contact">Contact</Link>
+            <Link to="/partner">Partner with us</Link>
           </div>
         </div>
 
@@ -53,9 +51,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="watermark" aria-hidden="true">
-        ZYVORA
-      </div>
+      <div className="watermark" aria-hidden="true">ZYVORA</div>
     </footer>
   )
 }

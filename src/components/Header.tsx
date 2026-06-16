@@ -1,12 +1,21 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useScrolled } from '../hooks/useScrolled'
-import { Arrow, LogoMark } from './Icons'
+import { LogoMark } from './Icons'
+
+const NAV = [
+  { label: 'Tournaments', to: '/tournaments' },
+  { label: 'Players', to: '/players' },
+  { label: 'Creators', to: '/creators' },
+  { label: 'Bots', to: '/bots' },
+  { label: 'Jerseys', to: '/jerseys' },
+]
 
 export default function Header() {
   const scrolled = useScrolled()
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
+  const { pathname } = useLocation()
 
   return (
     <header className={scrolled ? 'scrolled' : ''}>
@@ -20,35 +29,20 @@ export default function Header() {
 
         <nav>
           <ul className={open ? 'open' : ''}>
+            {NAV.map((n) => (
+              <li key={n.to}>
+                <Link
+                  className={`navlink${pathname === n.to ? ' active' : ''}`}
+                  to={n.to}
+                  onClick={close}
+                >
+                  {n.label}
+                </Link>
+              </li>
+            ))}
             <li>
-              <a className="navlink" href="/#work" onClick={close}>
-                What we do
-              </a>
-            </li>
-            <li>
-              <a className="navlink" href="/#automation" onClick={close}>
-                Automation
-              </a>
-            </li>
-            <li>
-              <a className="navlink" href="/#principles" onClick={close}>
-                Studio
-              </a>
-            </li>
-            <li>
-              <Link className="navlink" to="/play" onClick={close}>
-                Play
-              </Link>
-            </li>
-            <li>
-              <Link className="navlink" to="/superchat" onClick={close}>
-                Superchat
-              </Link>
-            </li>
-            <li>
-              <Link className="btn btn-molten" to="/partner" onClick={close}>
-                Partner with us
-                <Arrow />
+              <Link className="btn btn-molten nav-cta" to="/partner" onClick={close}>
+                Partner
               </Link>
             </li>
           </ul>
