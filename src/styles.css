@@ -112,45 +112,104 @@ nav .navlink:hover::after { width: 100%; }
 .menu-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 6px; }
 .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--ink); margin: 5px 0; transition: .3s; }
 
-/* ---------- HERO ---------- */
-.hero { padding: 166px 0 86px; position: relative; }
-.hero-grid { display: grid; grid-template-columns: 1.35fr .9fr; gap: 56px; align-items: center; }
-.hero .eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
-.hero .eyebrow .tick { width: 30px; height: 1px; background: var(--steel); flex: 0 0 auto; }
-h1.display {
+/* ---------- FORGE HERO ---------- */
+.hero-forge {
+  background: #0d0f12; position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.hero-forge::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.forge-glow {
+  position: absolute; top: -15%; right: -8%; width: 60%; height: 90%;
+  background: radial-gradient(ellipse at center, rgba(232,64,31,.18) 0%, rgba(232,64,31,.04) 45%, transparent 72%);
+  pointer-events: none; z-index: 0;
+}
+.forge-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 56px;
+  padding-top: 148px; padding-bottom: 96px;
+  position: relative; z-index: 1;
+}
+.forge-eyebrow {
+  display: flex; align-items: center; gap: 14px;
+  font-family: "Space Mono", monospace; font-size: 10.5px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(236,237,233,.38); margin-bottom: 26px;
+}
+.forge-eye-line { display: inline-block; width: 26px; height: 1px; background: var(--molten); flex-shrink: 0; }
+.forge-h1 {
   font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
-  font-size: clamp(46px, 7.4vw, 104px); line-height: .92; letter-spacing: -.01em;
-  text-transform: uppercase;
+  font-size: clamp(54px, 7.5vw, 100px); line-height: .88; letter-spacing: -.02em;
+  text-transform: uppercase; color: var(--bone);
+  display: flex; flex-direction: column; margin-bottom: 26px;
 }
-h1.display .molten { color: var(--molten); position: relative; display: inline-block; }
-/* molten heat-line under the key word */
-.heatline {
-  height: 8px; width: min(420px, 72%); margin: 26px 0 30px; border-radius: 6px;
-  background: linear-gradient(90deg, var(--crimson), var(--molten) 38%, var(--ember) 70%, var(--molten-2));
-  background-size: 240% 100%; box-shadow: 0 0 24px -4px rgba(232, 64, 31, .6);
-  animation: heat 5s linear infinite;
+.forge-italic { font-style: italic; }
+.forge-sub {
+  font-size: 16px; color: rgba(236,237,233,.5);
+  max-width: 420px; line-height: 1.65; margin-bottom: 36px;
 }
-@keyframes heat { 0% { background-position: 0% 0; } 100% { background-position: 240% 0; } }
-.hero p.lede { font-size: 18.5px; color: var(--ink-soft); max-width: 540px; margin-bottom: 32px; }
-.hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.forge-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
+.forge-ghost {
+  background: transparent; color: rgba(236,237,233,.65);
+  border: 1px solid rgba(236,237,233,.15); border-radius: var(--radius);
+  font-weight: 600; font-size: 14.5px; padding: 11px 20px;
+  cursor: pointer; transition: background .2s, color .2s;
+  display: inline-flex; align-items: center;
+}
+.forge-ghost:hover { background: rgba(255,255,255,.07); color: var(--bone); }
+.forge-stats { display: flex; align-items: center; gap: 22px; }
+.forge-stat { display: flex; flex-direction: column; gap: 4px; }
+.forge-stat-n { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 18px; color: var(--bone); }
+.forge-stat-l {
+  font-family: "Space Mono", monospace; font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase; color: rgba(236,237,233,.3);
+}
+.forge-stat-sep { width: 1px; height: 30px; background: rgba(255,255,255,.1); }
 
-/* ---------- HERO · centered monument (A) + marquee (E) ---------- */
-.hero-center { padding: 184px 0 0; }
-.hero-center-inner { position: relative; }
-.hero-center-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.hero-watermark { position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); z-index: 0; pointer-events: none; width: min(640px, 80vw); }
-.hero-watermark svg { width: 100%; height: auto; display: block; opacity: .06; }
-.tick-steel { width: 30px; height: 1px; background: var(--steel); flex: 0 0 auto; }
-.hero-center .eyebrow { justify-content: center; margin-bottom: 32px; }
-.hero-center h1.display { font-size: clamp(48px, 9vw, 116px); max-width: 15ch; }
-.hero-center .heatline { margin: 34px auto 38px; }
-.hero-center .lede { max-width: 600px; margin: 0 auto 40px; text-align: center; }
-.hero-center .cta-row { justify-content: center; }
+/* jersey side */
+.forge-jersey-side { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; }
+.forge-jersey-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+.forge-jersey-glow {
+  position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,64,31,.3) 0%, transparent 70%);
+  filter: blur(48px); pointer-events: none; z-index: 0;
+}
+.forge-jersey-img {
+  position: relative; z-index: 1; max-width: 420px; width: 100%; object-fit: contain;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(232,64,31,.15));
+  animation: jersey-float 5s ease-in-out infinite;
+}
+@keyframes jersey-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+.forge-kit-tag {
+  position: relative; z-index: 2; margin-top: 28px;
+  display: flex; align-items: center; gap: 20px; padding: 11px 20px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--radius); backdrop-filter: blur(8px);
+}
+.forge-kit-label {
+  font-family: "Space Mono", monospace; font-size: 10.5px;
+  letter-spacing: .16em; text-transform: uppercase; color: rgba(236,237,233,.4);
+}
+.forge-kit-link {
+  font-family: "Space Mono", monospace; font-size: 10.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--molten);
+  display: flex; align-items: center; gap: 6px; transition: gap .2s var(--easing);
+}
+.forge-kit-link:hover { gap: 10px; }
 
+/* marquee */
 .marquee {
-  margin-top: 104px; background: var(--ink);
-  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
-  overflow: hidden; white-space: nowrap;
+  background: var(--ink); overflow: hidden; white-space: nowrap;
+  border-top: 1px solid rgba(255,255,255,.06);
 }
 .marquee-track { display: inline-flex; animation: marquee 26s linear infinite; will-change: transform; }
 .marquee-group {
@@ -163,48 +222,58 @@ h1.display .molten { color: var(--molten); position: relative; display: inline-b
 .marquee-item .sep { color: var(--molten); margin: 0 28px; font-weight: 900; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-@media (max-width: 780px) {
-  .hero-center { padding-top: 138px; }
-  .marquee { margin-top: 68px; }
+/* ---------- JERSEY SPOT (home page section) ---------- */
+.jspot { background: #0d0f12; padding: 88px 0; }
+.jspot-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 64px;
+}
+.jspot-copy h2 { color: var(--bone); }
+.jspot-copy p { color: rgba(236,237,233,.5); font-size: 16px; margin-top: 14px; margin-bottom: 28px; }
+.jspot-stack { position: relative; height: 440px; }
+.jspot-card {
+  position: absolute; border-radius: 8px; overflow: hidden;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  padding: 28px; transition: transform .4s var(--easing);
+}
+.jspot-card img { max-height: 280px; width: auto; object-fit: contain; display: block; }
+.jspot-back  { top: 20px; left: 0%;   transform: rotate(-5deg); }
+.jspot-front { top: 30px; left: 36%;  transform: rotate(3deg); z-index: 1; }
+.jspot-inner:hover .jspot-back  { transform: rotate(-8deg) translate(-16px, -4px); }
+.jspot-inner:hover .jspot-front { transform: rotate(6deg)  translate(8px,  -8px); }
+.jspot-label {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(236,237,233,.28);
+  background: rgba(0,0,0,.4); padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+  z-index: 2;
+}
+
+/* responsive */
+@media (max-width: 840px) {
+  .forge-grid { grid-template-columns: 1fr; padding-top: 130px; padding-bottom: 0; gap: 0; }
+  .forge-jersey-side { padding: 40px 0; }
+  .forge-jersey-img { max-width: 300px; }
+  .jspot-inner { grid-template-columns: 1fr; gap: 32px; }
+  .jspot-stack { height: 320px; }
+  .jspot-card img { max-height: 200px; }
 }
 @media (max-width: 560px) {
-  .hero-center .tick-steel { display: none; }
+  .forge-h1 { font-size: clamp(48px, 14vw, 72px); }
+  .forge-stats { gap: 14px; }
+  .forge-stat-sep { display: none; }
 }
 
-/* hero side: forged seal medallion */
-.seal {
-  position: relative; background: var(--paper); border: 1px solid var(--line);
-  border-radius: var(--radius); padding: 34px;
-  display: flex; flex-direction: column; align-items: center; gap: 20px;
-  box-shadow: 0 30px 60px -40px rgba(21, 23, 28, .45);
+/* keep heatline for other pages that still use it */
+.heatline {
+  height: 8px; width: min(420px, 72%); margin: 26px 0 30px; border-radius: 6px;
+  background: linear-gradient(90deg, var(--crimson), var(--molten) 38%, var(--ember) 70%, var(--molten-2));
+  background-size: 240% 100%; box-shadow: 0 0 24px -4px rgba(232, 64, 31, .6);
+  animation: heat 5s linear infinite;
 }
-.seal-svg { max-width: 100%; height: auto; }
-.ring-text {
-  font-family: "Space Mono", monospace; font-size: 10.5px; letter-spacing: 3px;
-  fill: var(--steel); text-transform: uppercase;
-}
-.seal-word {
-  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
-  font-size: 22px; letter-spacing: .2em; color: var(--ink);
-}
-.seal-word .v { color: var(--molten); }
-.seal-meta {
-  font-family: "Space Mono", monospace; font-size: 10.5px; letter-spacing: .2em;
-  color: var(--steel); text-transform: uppercase;
-}
-
-/* rising spark particles */
-.sparks { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-.spark {
-  position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%;
-  background: var(--molten); box-shadow: 0 0 8px 1px var(--ember); opacity: 0;
-  animation: rise linear infinite;
-}
-@keyframes rise {
-  0% { transform: translateY(0) scale(1); opacity: 0; }
-  12% { opacity: .9; }
-  100% { transform: translateY(-340px) scale(.2); opacity: 0; }
-}
+@keyframes heat { 0% { background-position: 0% 0; } 100% { background-position: 240% 0; } }
+.heatline-center { margin: 34px auto 38px; }
+.tick-steel { width: 30px; height: 1px; background: var(--steel); flex: 0 0 auto; }
 
 /* ---------- SECTION SHELL ---------- */
 section { padding: 96px 0; position: relative; }

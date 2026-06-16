@@ -1,76 +1,86 @@
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Arrow } from './Icons'
 
-type Spark = { left: string; size: string; duration: string; delay: string }
-
-const MARQUEE_ITEMS = ['Esports', 'Room automation', 'Broadcast', 'Creator sites', 'Jerseys', 'Tournaments']
+const MARQUEE_ITEMS = ['Esports', 'Room automation', 'Broadcast', 'Creator sites', 'Official kit', 'Tournaments']
 
 export default function Hero() {
-  const sparks = useMemo<Spark[]>(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) return []
-    const count = window.innerWidth < 700 ? 8 : 16
-    return Array.from({ length: count }, () => {
-      const px = 2 + Math.random() * 2.5
-      return {
-        left: `${Math.random() * 90 + 5}%`,
-        size: `${px}px`,
-        duration: `${3.5 + Math.random() * 3}s`,
-        delay: `${Math.random() * 5}s`,
-      }
-    })
-  }, [])
-
   return (
-    <section className="hero hero-center">
-      <div className="sparks" aria-hidden="true">
-        {sparks.map((s, i) => (
-          <span
-            key={i}
-            className="spark"
-            style={{ left: s.left, width: s.size, height: s.size, animationDuration: s.duration, animationDelay: s.delay }}
-          />
-        ))}
-      </div>
+    <section className="hero-forge">
+      <div className="forge-glow" aria-hidden="true" />
 
-      <div className="wrap hero-center-inner">
-        <div className="hero-watermark" aria-hidden="true">
-          <svg viewBox="0 0 30 30" fill="none">
-            <path d="M15 1.5 27.5 8v14L15 28.5 2.5 22V8L15 1.5Z" stroke="#15171C" strokeWidth="0.7" />
-            <path d="M9 10h12l-9 7h9" stroke="#E8401F" strokeWidth="1" strokeLinejoin="round" strokeLinecap="round" />
-          </svg>
-        </div>
+      <div className="wrap forge-grid">
+        {/* ── left: copy ── */}
+        <div className="forge-copy">
+          <div className="forge-eyebrow">
+            <span className="forge-eye-line" />
+            Esports org — Est. 2026
+          </div>
 
-        <div className="hero-center-content">
-          <h1 className="display reveal">
-            Forge the <span className="molten">future</span>.
+          <h1 className="forge-h1">
+            <span className="forge-word">Forge</span>
+            <span className="forge-word forge-italic molten">the</span>
+            <span className="forge-word">future.</span>
           </h1>
-          <div className="heatline heatline-center reveal" />
-          <p className="lede reveal">
-            ZYVORA builds the bots that run official esports rooms for broadcast productions,
-            and crafts the internet homes where creators grow their brand.
+
+          <p className="forge-sub">
+            ZYVORA runs official esports rooms for broadcast productions
+            and builds the internet homes where creators grow their brand.
           </p>
-          <div className="cta-row cta-center reveal">
-            <a className="btn btn-primary" href="#automation">
-              See how it works
-              <Arrow />
-            </a>
-            <Link className="btn btn-ghost" to="/partner">
+
+          <div className="forge-actions">
+            <Link className="btn btn-molten" to="/players">
+              Join the roster <Arrow />
+            </Link>
+            <Link className="btn forge-ghost" to="/partner">
               Partner with us
             </Link>
+          </div>
+
+          <div className="forge-stats">
+            <div className="forge-stat">
+              <span className="forge-stat-n">S1</span>
+              <span className="forge-stat-l">Season loading</span>
+            </div>
+            <div className="forge-stat-sep" />
+            <div className="forge-stat">
+              <span className="forge-stat-n">Bot</span>
+              <span className="forge-stat-l">Fully automated</span>
+            </div>
+            <div className="forge-stat-sep" />
+            <div className="forge-stat">
+              <span className="forge-stat-n">Live</span>
+              <span className="forge-stat-l">Broadcast overlay</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── right: jersey ── */}
+        <div className="forge-jersey-side">
+          <div className="forge-jersey-wrap">
+            <div className="forge-jersey-glow" aria-hidden="true" />
+            <img
+              src="/jersey-3.webp"
+              alt="ZYVORA official jersey"
+              className="forge-jersey-img"
+            />
+            <div className="forge-kit-tag">
+              <span className="forge-kit-label">Official Kit</span>
+              <Link to="/jerseys" className="forge-kit-link">
+                View all <Arrow />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* marquee transition */}
       <div className="marquee" role="presentation">
         <div className="marquee-track">
-          {[0, 1].map((group) => (
-            <div className="marquee-group" key={group} aria-hidden={group === 1 ? true : undefined}>
+          {[0, 1].map((g) => (
+            <div className="marquee-group" key={g} aria-hidden={g === 1 ? true : undefined}>
               {MARQUEE_ITEMS.map((item, i) => (
                 <span className="marquee-item" key={i}>
-                  {item}
-                  <span className="sep">/</span>
+                  {item}<span className="sep">/</span>
                 </span>
               ))}
             </div>
