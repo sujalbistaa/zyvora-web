@@ -47,7 +47,7 @@ export default function Footer() {
 
         <div className="foot-bottom">
           <span className="mono">&copy; 2026 ZYVORA — FORGE THE FUTURE</span>
-          <span className="mono">PRIVACY · TERMS</span>
+          <span className="mono">Crafted by Sujal with ❤️</span>
         </div>
       </div>
 
