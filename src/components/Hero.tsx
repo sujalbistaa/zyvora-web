@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Arrow, LogoMark } from './Icons'
 import gsap from 'gsap'
+import { useHeroAudio } from '../hooks/useHeroAudio'
+import { SoundToggle } from './SoundToggle'
 
 // ── Logo shape targets sampled from LogoMark SVG (30×30 viewBox)
 // Hexagon: M15 1.5 27.5 8v14L15 28.5 2.5 22V8L15 1.5Z
@@ -62,6 +64,23 @@ export default function Hero() {
   const phase      = useRef<0 | 1 | 2>(0)
   const rafId      = useRef<number>(0)
   const tlRef      = useRef<gsap.core.Timeline | null>(null)
+  const soundRef   = useRef(false)
+  const pulseRings = useRef<{ x: number; y: number; r: number; maxR: number; a: number }[]>([])
+
+  const { enabled: soundEnabled, loading: soundLoading, toggle: toggleSound } = useHeroAudio()
+
+  // sync sound state into canvas loop ref
+  useEffect(() => {
+    soundRef.current = soundEnabled
+    if (logoRef.current) {
+      if (soundEnabled) {
+        gsap.to(logoRef.current, { scale: 1.045, duration: 0.9, yoyo: true, repeat: -1, ease: 'sine.inOut' })
+      } else {
+        gsap.killTweensOf(logoRef.current)
+        gsap.to(logoRef.current, { scale: 1, duration: 0.4, ease: 'power2.out' })
+      }
+    }
+  }, [soundEnabled])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -137,9 +156,10 @@ export default function Hero() {
           p.trail.unshift({ x: p.x, y: p.y })
           if (p.trail.length > 9) p.trail.pop()
         } else {
+          const sp = soundRef.current ? 1.4 : 1.0
           const dx = p.hx - p.x, dy = p.hy - p.y
-          p.vx += dx * 0.0035 + (Math.random() - 0.5) * 0.09
-          p.vy += dy * 0.0035 + (Math.random() - 0.5) * 0.09
+          p.vx += dx * 0.0035 * sp + (Math.random() - 0.5) * 0.09 * sp
+          p.vy += dy * 0.0035 * sp + (Math.random() - 0.5) * 0.09 * sp
           p.vx *= 0.91; p.vy *= 0.91
           p.x += p.vx; p.y += p.vy
           p.hx += (p.tx - p.hx) * 0.0018 + (Math.random() - 0.5) * 0.28
@@ -168,19 +188,46 @@ export default function Hero() {
         if (ph !== 1) p.trail = []
       }
 
+      const sound = soundRef.current
+      const sparkThresh = sound ? 0.055 : 0.028
+
       // ambient sparks near logo
-      if (ph === 2 && Math.random() < 0.028) {
+      if (ph === 2 && Math.random() < sparkThresh) {
         const cx = W / 2, cy = H * 0.42
         const s = Math.min(W, H) * 0.105
         const a = Math.random() * Math.PI * 2
         const r = s * (0.35 + Math.random() * 1.0)
         ctx.beginPath()
         ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r,
-          0.8 + Math.random() * 1.8, 0, Math.PI * 2)
+          0.8 + Math.random() * (sound ? 2.4 : 1.8), 0, Math.PI * 2)
         ctx.fillStyle = `rgba(255,106,0,${0.45 + Math.random() * 0.55})`
-        ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(255,106,0,0.65)'
+        ctx.shadowBlur = sound ? 16 : 10
+        ctx.shadowColor = 'rgba(255,106,0,0.65)'
         ctx.fill(); ctx.shadowBlur = 0
       }
+
+      // audio-reactive pulse rings
+      if (sound && ph === 2 && Math.random() < 0.006) {
+        pulseRings.current.push({
+          x: W / 2, y: H * 0.42,
+          r: Math.min(W, H) * 0.05,
+          maxR: Math.min(W, H) * 0.28,
+          a: 0.28,
+        })
+      }
+
+      ctx.save()
+      pulseRings.current = pulseRings.current.filter(ring => ring.a > 0.008)
+      for (const ring of pulseRings.current) {
+        ring.r += (ring.maxR - ring.r) * 0.04
+        ring.a *= 0.962
+        ctx.beginPath()
+        ctx.arc(ring.x, ring.y, ring.r, 0, Math.PI * 2)
+        ctx.strokeStyle = `rgba(255,106,0,${ring.a})`
+        ctx.lineWidth = 1.2
+        ctx.stroke()
+      }
+      ctx.restore()
     }
 
     rafId.current = requestAnimationFrame(tick)
@@ -323,6 +370,10 @@ export default function Hero() {
       <div ref={scrollRef} className="hero-scroll" style={{ opacity: 0 }} aria-hidden="true">
         <div className="hero-scroll-line" />
         <span className="hero-scroll-lbl">Scroll</span>
+      </div>
+
+      <div className="sound-wrap">
+        <SoundToggle enabled={soundEnabled} loading={soundLoading} onToggle={toggleSound} />
       </div>
 
       <div className="hero-bottom-fade" aria-hidden="true" />

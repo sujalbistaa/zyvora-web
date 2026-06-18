@@ -320,6 +320,80 @@ nav .navlink:hover::after { width: 100%; }
   letter-spacing: .26em; text-transform: uppercase; color: rgba(255,255,255,.28);
 }
 
+/* ── Sound toggle ───────────────────────────────────────────── */
+.sound-wrap {
+  position: absolute; bottom: 32px; right: 32px;
+  z-index: 10;
+}
+
+.sound-btn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 10px 18px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 2px;
+  color: rgba(255,255,255,.65);
+  font-family: "Space Mono", monospace;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: color .25s, border-color .25s, background .25s;
+  will-change: transform;
+}
+
+/* energy sweep on hover */
+.sound-sweep {
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,106,0,.18), transparent);
+  transition: left .5s var(--easing);
+  pointer-events: none;
+}
+.sound-btn:hover .sound-sweep { left: 140%; }
+
+.sound-btn:hover {
+  border-color: rgba(255,106,0,.55);
+  color: #fff;
+  background: rgba(255,106,0,.08);
+}
+
+/* active / sound-on state */
+.sound-btn.sound-on {
+  border-color: rgba(255,106,0,.55);
+  color: #FF6A00;
+  background: rgba(255,106,0,.1);
+}
+
+.sound-btn:disabled { opacity: .55; cursor: default; }
+
+/* icon */
+.sound-icon { display: flex; align-items: center; flex-shrink: 0; }
+
+/* equalizer bars */
+.sound-eq {
+  display: flex; align-items: flex-end; gap: 2px; height: 14px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.sound-btn.sound-on .sound-eq { opacity: 1; }
+
+.eq-b {
+  width: 3px; border-radius: 1px;
+  background: #FF6A00;
+  transform-origin: bottom;
+}
+.eq-b:nth-child(1) { height: 8px;  animation: eq 0.55s ease-in-out infinite alternate; }
+.eq-b:nth-child(2) { height: 13px; animation: eq 0.4s  ease-in-out infinite alternate .1s; }
+.eq-b:nth-child(3) { height: 6px;  animation: eq 0.7s  ease-in-out infinite alternate .22s; }
+
+@keyframes eq {
+  from { transform: scaleY(.25); }
+  to   { transform: scaleY(1); }
+}
+
+.sound-btn.sound-on .sound-label { color: #FF6A00; }
+
 /* gradient fade into next section */
 .hero-bottom-fade {
   position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
