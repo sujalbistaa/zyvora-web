@@ -1456,44 +1456,97 @@ footer .watermark {
 
 /* left */
 .jsy-stage-left {
-  position: relative; display: flex; flex-direction: column; align-items: center; gap: 24px;
+  position: relative; display: flex; flex-direction: column; align-items: flex-start;
 }
 
-/* 3D card — tilt via perspective() in transform; faces swap with opacity */
-.jsy-card {
-  position: relative; z-index: 1;
-  width: 100%; max-width: 440px; aspect-ratio: 3/4;
-  cursor: crosshair;
+/* ── Dual 3D jersey showcase ──────────────────────────────────────────────── */
+.jsy-duo-wrap {
+  position: relative; width: 100%; height: 480px; cursor: crosshair;
+}
+
+/* Ambient glow orbs */
+.jsy-duo-glow {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); pointer-events: none; z-index: 0;
+  animation: duo-glow-pulse 3.5s ease-in-out infinite alternate;
+}
+.jsy-duo-glow--a {
+  width: 310px; height: 270px; left: -30px; top: 30px;
+  background: radial-gradient(circle, rgba(255,106,0,.32) 0%, transparent 70%);
+}
+.jsy-duo-glow--b {
+  width: 250px; height: 210px; right: -20px; top: 200px;
+  background: radial-gradient(circle, rgba(255,106,0,.2) 0%, transparent 70%);
+  animation-delay: 1s;
+}
+@keyframes duo-glow-pulse {
+  0%   { opacity: .55; scale: 1; }
+  100% { opacity: 1;   scale: 1.22; }
+}
+
+/* Card base */
+.jsy-duo-card {
+  position: absolute; border-radius: 20px; overflow: hidden;
+  transition: transform .08s linear;
+  box-shadow:
+    0 44px 88px rgba(0,0,0,.78),
+    0 0 0 1px rgba(255,255,255,.09),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+/* Primary card — dark jersey, front-left, larger */
+.jsy-duo-card--primary {
+  width: 88%; aspect-ratio: 17/10;
+  left: 0; top: 0; z-index: 2;
   transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform .06s linear;
-  border-radius: 16px; overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08),
-              inset 0 1px 0 rgba(255,255,255,.07);
+  animation: duo-float-a 5.5s ease-in-out infinite;
 }
 
-/* faces sit on top of each other, swap with opacity */
-.jsy-face {
-  position: absolute; inset: 0;
-  transition: opacity .45s ease;
+/* Secondary card — white jersey, behind-right, smaller */
+.jsy-duo-card--secondary {
+  width: 68%; aspect-ratio: 17/10;
+  right: 0; top: 170px; z-index: 1;
+  transform: perspective(1000px) rotateX(var(--rx2, 0deg)) rotateY(var(--ry2, 0deg));
+  animation: duo-float-b 5.5s ease-in-out .8s infinite;
 }
-.jsy-face-front { opacity: 1; z-index: 2; }
-.jsy-face-back  { opacity: 0; z-index: 1; pointer-events: none; }
-.jsy-card--flipped .jsy-face-front { opacity: 0; pointer-events: none; }
-.jsy-card--flipped .jsy-face-back  { opacity: 1; z-index: 2; pointer-events: auto; }
 
-/* Front face layers */
-.jsy-card-bg {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 90% at 50% 40%, #141820 0%, #0a0b0f 100%);
+@keyframes duo-float-a {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -18px; }
 }
-.jsy-card-img {
+@keyframes duo-float-b {
+  0%, 100% { translate: 0 -12px; }
+  50%       { translate: 0 14px; }
+}
+
+/* Card backgrounds */
+.jsy-duo-card-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 90% 90% at 50% 40%, #131720 0%, #080a0e 100%);
+}
+.jsy-duo-card-bg--light {
+  background: radial-gradient(ellipse 90% 90% at 50% 45%, #f4efe6 0%, #e6dfd3 100%);
+}
+
+/* Jersey image in card */
+.jsy-duo-img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: contain; padding: 24px 32px;
-  filter: drop-shadow(0 20px 48px rgba(0,0,0,.5));
+  object-fit: contain; padding: 10px 18px;
   z-index: 1; pointer-events: none;
-  transition: transform .3s var(--easing);
+  transition: transform .35s ease;
 }
-.jsy-face-front:hover .jsy-card-img { transform: scale(1.03); }
+.jsy-duo-card:hover .jsy-duo-img { transform: scale(1.04); }
+
+/* Card label chip */
+.jsy-duo-label {
+  position: absolute; bottom: 14px; left: 14px; z-index: 6;
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(255,255,255,.6);
+  background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+  padding: 5px 11px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.jsy-duo-label--orange { color: #FF6A00; border-color: rgba(255,106,0,.35); }
 
 /* Holographic overlay */
 .jsy-holo {
@@ -1510,25 +1563,22 @@ footer .watermark {
     rgba(255,106,0,.18) 320deg,
     transparent 360deg
   );
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity .3s;
+  mix-blend-mode: screen; opacity: 0; transition: opacity .3s;
 }
-.jsy-face-front:hover .jsy-holo { opacity: 1; }
+.jsy-duo-card:hover .jsy-holo { opacity: 1; }
 
 /* Specular light */
 .jsy-light {
   position: absolute; inset: 0; z-index: 3; pointer-events: none;
   background: radial-gradient(
-    circle 200px at var(--lx, 50%) var(--ly, 50%),
+    circle 220px at var(--lx, 50%) var(--ly, 50%),
     rgba(255,106,0,.18) 0%,
     rgba(255,160,60,.06) 50%,
     transparent 100%
   );
-  mix-blend-mode: screen;
-  opacity: 0; transition: opacity .25s;
+  mix-blend-mode: screen; opacity: 0; transition: opacity .25s;
 }
-.jsy-face-front:hover .jsy-light { opacity: 1; }
+.jsy-duo-card:hover .jsy-light { opacity: 1; }
 
 /* Fabric texture */
 .jsy-fabric {
@@ -1541,92 +1591,34 @@ footer .watermark {
 
 /* Light sweep */
 .jsy-sweep {
-  position: absolute; inset: 0; z-index: 5; pointer-events: none;
-  overflow: hidden;
+  position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden;
 }
 .jsy-sweep::after {
-  content: "";
-  position: absolute; top: 0; left: -120%; width: 80%; height: 100%;
+  content: ""; position: absolute; top: 0; left: -120%; width: 80%; height: 100%;
   background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.08) 50%, transparent 70%);
   transform: skewX(-15deg);
 }
-.jsy-sweep--run::after {
-  animation: jsy-sweep-run 2.4s ease-in-out infinite;
-}
-@keyframes jsy-sweep-run {
-  0%   { left: -120%; }
-  100% { left: 140%; }
-}
+.jsy-sweep--run::after { animation: jsy-sweep-run 2.4s ease-in-out infinite; }
+@keyframes jsy-sweep-run { 0% { left: -120%; } 100% { left: 140%; } }
 
-/* Season badge */
-.jsy-card-badge {
-  position: absolute; bottom: 18px; left: 18px; z-index: 6;
-  display: flex; align-items: center; gap: 7px;
-  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .14em;
-  text-transform: uppercase; color: rgba(236,237,233,.7);
-  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
-  padding: 6px 12px; border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.1);
+/* Specs bar in right panel */
+.jsy-duo-specs {
+  display: flex; align-items: center;
+  margin-top: 32px; padding: 24px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.jsy-card-badge-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #FF6A00;
-  box-shadow: 0 0 6px #FF6A00;
-  animation: jsy-badge-pulse 2s ease-in-out infinite;
-}
-@keyframes jsy-badge-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .4; }
-}
-
-/* Back face background */
-.jsy-face-back .jsy-card-bg {
-  background: radial-gradient(ellipse 80% 90% at 50% 40%, #141820 0%, #0a0b0f 100%);
-}
-
-/* Jersey image on back face — dimmed so text pops */
-.jsy-card-img--back {
-  filter: drop-shadow(0 20px 48px rgba(0,0,0,.5)) brightness(0.65) saturate(0.8);
-}
-
-/* Name + number overlay — sits in the jersey torso area */
-.jsy-on-jersey {
-  position: absolute;
-  top: 22%; left: 50%;
-  transform: translateX(-50%);
-  z-index: 3; pointer-events: none;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center; gap: 0;
-  width: 80%;
-}
-.jsy-on-name {
+.jsy-spec { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.jsy-spec-val {
   font-family: "Archivo", sans-serif; font-weight: 900;
-  font-size: clamp(12px, 2.4vw, 16px); letter-spacing: .28em;
-  text-transform: uppercase; color: #fff;
-  text-shadow: 0 1px 6px rgba(0,0,0,.8), 0 0 20px rgba(0,0,0,.5);
+  font-size: 26px; color: #FF6A00; letter-spacing: -.02em;
 }
-.jsy-on-num {
-  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
-  font-size: clamp(68px, 12vw, 96px); line-height: .85;
-  letter-spacing: -.03em; color: #fff;
-  text-shadow:
-    0 2px 0 rgba(0,0,0,.6),
-    0 0 32px rgba(255,106,0,.25),
-    0 0 60px rgba(0,0,0,.4);
+.jsy-spec-key {
+  font-family: "Space Mono", monospace; font-size: 9px;
+  letter-spacing: .1em; text-transform: uppercase; color: rgba(236,237,233,.4);
 }
-
-/* Flip + dots controls */
-.jsy-flip-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: .12em;
-  text-transform: uppercase; color: rgba(236,237,233,.5);
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-  padding: 9px 18px; border-radius: 20px; cursor: pointer;
-  transition: color .2s, border-color .2s, background .2s;
-}
-.jsy-flip-btn:hover {
-  color: #FF6A00; border-color: rgba(255,106,0,.3); background: rgba(255,106,0,.05);
-}
+.jsy-spec-div { width: 1px; height: 44px; background: rgba(255,255,255,.1); }
+.jsy-duo-cta { margin-top: 32px; }
 .jsy-dots { display: flex; gap: 10px; }
 .jsy-dot {
   width: 8px; height: 8px; border-radius: 50%; cursor: pointer;
@@ -1814,16 +1806,17 @@ footer .watermark {
   .jsy-hero-float { display: none; }
   .jsy-stage-wrap { grid-template-columns: 1fr; gap: 52px; padding: 0 32px; }
   .jsy-stage-left { align-items: center; }
-  .jsy-card       { max-width: 380px; }
-  .jsy-chapter    { max-width: 100%; }
-  .jsy-chapter--right { margin-left: 0; }
+  .jsy-duo-wrap   { height: 380px; }
+  .jsy-duo-card--secondary { top: 140px; }
 }
 @media (max-width: 600px) {
   .jsy-hero-grid, .jsy-stage-wrap { padding: 0 20px; }
-  .jsy-card     { max-width: 320px; }
-  .jky-title    { font-size: clamp(42px, 13vw, 72px); }
-  .jsy-ch-stats { flex-direction: column; gap: 24px; }
-  .jsy-hero-ctas { flex-direction: column; }
+  .jky-title      { font-size: clamp(42px, 13vw, 72px); }
+  .jsy-hero-ctas  { flex-direction: column; }
+  .jsy-duo-wrap   { height: 320px; }
+  .jsy-duo-card--primary   { width: 94%; }
+  .jsy-duo-card--secondary { width: 74%; top: 115px; }
+  .jsy-duo-specs  { gap: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .jsy-hero-float-img { animation: none; }

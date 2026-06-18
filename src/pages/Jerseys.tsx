@@ -12,40 +12,18 @@ interface Particle {
 }
 
 function spawnParticle(x: number, y: number, particles: Particle[]) {
-  if (particles.length > 70) return
+  if (particles.length > 80) return
   const angle = Math.random() * Math.PI * 2
-  const speed = Math.random() * 1.8 + 0.4
+  const speed = Math.random() * 2 + 0.5
   particles.push({
     x, y,
     vx: Math.cos(angle) * speed,
-    vy: Math.sin(angle) * speed - 1.2,
+    vy: Math.sin(angle) * speed - 1.4,
     life: 1, maxLife: 1,
-    size: Math.random() * 3.5 + 1,
-    hue: Math.random() * 25,
+    size: Math.random() * 4 + 1,
+    hue: Math.random() * 30,
   })
 }
-
-// ── Jersey data ───────────────────────────────────────────────────────────────
-const JERSEYS = [
-  {
-    id: 'season-01',
-    season: 'Season 01',
-    label: 'THE FORGE KIT',
-    cleanSrc: '/jersey-4-removebg.webp',
-    tag: 'OFFICIAL ROSTER KIT',
-    year: '2025',
-    detail: 'Dual-layer performance weave. Heat-bonded ZYVORA crest.',
-  },
-  {
-    id: 'season-02',
-    season: 'Season 02',
-    label: 'BROADCAST EDITION',
-    cleanSrc: '/jersey-4-removebg.webp',
-    tag: 'BROADCAST EDITION',
-    year: '2026',
-    detail: 'Transparent-ready design for overlays, broadcast & content.',
-  },
-]
 
 const TITLE_CHARS = 'WEAR THE\nFORGE.'.split('')
 
@@ -76,19 +54,11 @@ function KineticTitle() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Jerseys() {
-  const [activeIdx, setActiveIdx]   = useState(0)
-  const [flipped, setFlipped]       = useState(false)
-  const [playerName, setPlayerName] = useState('YOUR NAME')
-  const [playerNum, setPlayerNum]   = useState('00')
-  const [hovering, setHovering]     = useState(false)
-  const [numRaw, setNumRaw]         = useState('00')
+  const [hovering, setHovering] = useState(false)
 
   const canvasRef    = useRef<HTMLCanvasElement>(null)
-  const cardRef      = useRef<HTMLDivElement>(null)
-  const stageRef     = useRef<HTMLDivElement>(null)
+  const wrapRef      = useRef<HTMLDivElement>(null)
   const particlesRef = useRef<Particle[]>([])
-
-  const jersey = JERSEYS[activeIdx]
 
   // ── Particle canvas ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -111,14 +81,14 @@ export default function Jerseys() {
       const ps = particlesRef.current
       for (let i = ps.length - 1; i >= 0; i--) {
         const p = ps[i]
-        p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.life -= 0.022
+        p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.life -= 0.02
         if (p.life <= 0) { ps.splice(i, 1); continue }
         const a = p.life / p.maxLife
         ctx2d.save()
-        ctx2d.globalAlpha = a * 0.85
-        ctx2d.shadowColor = `hsl(${20 + p.hue},100%,55%)`
-        ctx2d.shadowBlur  = 8
-        ctx2d.fillStyle   = `hsl(${20 + p.hue},100%,${55 + p.hue}%)`
+        ctx2d.globalAlpha = a * 0.9
+        ctx2d.shadowColor = `hsl(${18 + p.hue},100%,58%)`
+        ctx2d.shadowBlur  = 10
+        ctx2d.fillStyle   = `hsl(${18 + p.hue},100%,${58 + p.hue * 0.5}%)`
         ctx2d.beginPath()
         ctx2d.arc(p.x, p.y, p.size * a, 0, Math.PI * 2)
         ctx2d.fill()
@@ -129,52 +99,41 @@ export default function Jerseys() {
     return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
   }, [])
 
-  // ── Mouse: tilt + holographic + particle trail ────────────────────────────
+  // ── Mouse: dual-depth parallax + holographic + particles ─────────────────
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current
-    if (!card || flipped) return
+    const wrap = wrapRef.current
+    if (!wrap) return
+    const r  = wrap.getBoundingClientRect()
+    const nx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2)
+    const ny = (e.clientY - r.top  - r.height / 2) / (r.height / 2)
 
-    const r  = card.getBoundingClientRect()
-    const cx = r.left + r.width / 2
-    const cy = r.top  + r.height / 2
-    const nx = (e.clientX - cx) / (r.width  / 2)
-    const ny = (e.clientY - cy) / (r.height / 2)
-
-    card.style.setProperty('--rx', `${-ny * 14}deg`)
-    card.style.setProperty('--ry', `${nx  * 14}deg`)
-    card.style.setProperty('--holo-angle',
-      `${Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI)}deg`)
-    card.style.setProperty('--lx', `${((e.clientX - r.left) / r.width)  * 100}%`)
-    card.style.setProperty('--ly', `${((e.clientY - r.top)  / r.height) * 100}%`)
+    // Primary card: strong tilt | secondary card: half-intensity (depth separation)
+    wrap.style.setProperty('--rx',  `${-ny * 15}deg`)
+    wrap.style.setProperty('--ry',  `${nx  * 15}deg`)
+    wrap.style.setProperty('--rx2', `${-ny *  7}deg`)
+    wrap.style.setProperty('--ry2', `${nx  *  7}deg`)
+    wrap.style.setProperty('--holo-angle',
+      `${Math.atan2(e.clientY - r.top - r.height/2, e.clientX - r.left - r.width/2) * (180 / Math.PI)}deg`)
+    wrap.style.setProperty('--lx', `${((e.clientX - r.left) / r.width)  * 100}%`)
+    wrap.style.setProperty('--ly', `${((e.clientY - r.top)  / r.height) * 100}%`)
 
     const cv = canvasRef.current
     if (cv) {
       const cr = cv.getBoundingClientRect()
-      for (let i = 0; i < 3; i++)
+      for (let i = 0; i < 4; i++)
         spawnParticle(e.clientX - cr.left, e.clientY - cr.top, particlesRef.current)
     }
-  }, [flipped])
-
-  const onMouseLeave = useCallback(() => {
-    const card = cardRef.current
-    if (!card) return
-    card.style.setProperty('--rx', '0deg')
-    card.style.setProperty('--ry', '0deg')
   }, [])
 
-  const onNumChange = (raw: string) => {
-    const digits = raw.replace(/\D/g, '').slice(0, 2)
-    setNumRaw(digits)
-    const n = parseInt(digits)
-    if (!isNaN(n)) setPlayerNum(String(Math.min(99, n)).padStart(2, '0'))
-  }
-  const onNumBlur = () => {
-    // pad on blur so display always shows 00–99
-    const n = parseInt(numRaw)
-    const val = isNaN(n) ? '00' : String(Math.min(99, n)).padStart(2, '0')
-    setNumRaw(val)
-    setPlayerNum(val)
-  }
+  const onMouseLeave = useCallback(() => {
+    setHovering(false)
+    const wrap = wrapRef.current
+    if (!wrap) return
+    wrap.style.setProperty('--rx',  '0deg')
+    wrap.style.setProperty('--ry',  '0deg')
+    wrap.style.setProperty('--rx2', '0deg')
+    wrap.style.setProperty('--ry2', '0deg')
+  }, [])
 
   return (
     <main className="jsy-page">
@@ -183,7 +142,6 @@ export default function Jerseys() {
       <section className="jsy-hero">
         <div className="jsy-hero-grid">
 
-          {/* left: copy */}
           <div className="jsy-hero-inner">
             <div className="jsy-hero-eyebrow">
               <LogoMark stroke="#FF6A00" size={18} />
@@ -203,18 +161,17 @@ export default function Jerseys() {
               <a href="#stage" className="btn jsy-btn-primary">
                 View the kit <Arrow />
               </a>
-              <a href="#customise" className="btn jsy-btn-ghost">
-                Customise yours
-              </a>
+              <Link className="btn jsy-btn-ghost" to="/players">
+                Apply to play
+              </Link>
             </div>
           </div>
 
-          {/* right: full jersey photo */}
           <div className="jsy-hero-float">
             <div className="jsy-hero-float-glow" />
             <img
               src="/main-jersey.webp"
-              alt="ZYVORA official jersey — front and back"
+              alt="ZYVORA official jersey"
               className="jsy-hero-float-img"
               loading="eager"
             />
@@ -228,96 +185,69 @@ export default function Jerseys() {
         </div>
       </section>
 
-      {/* ══ §2 INTERACTIVE STAGE ══════════════════════════════════════════════ */}
-      <section className="jsy-stage-section" id="stage" ref={stageRef}>
+      {/* ══ §2 STAGE ═════════════════════════════════════════════════════════ */}
+      <section className="jsy-stage-section" id="stage">
         <div className="jsy-stage-wrap">
 
-          {/* Left: 3D card */}
-          <div
-            className="jsy-stage-left"
-            onMouseMove={onMouseMove}
-            onMouseLeave={onMouseLeave}
-            onMouseEnter={() => setHovering(true)}
-          >
-            <canvas ref={canvasRef} className="jsy-canvas" aria-hidden="true" />
-
+          {/* Left: dual 3D jersey showcase */}
+          <div className="jsy-stage-left">
             <div
-              className={`jsy-card${flipped ? ' jsy-card--flipped' : ''}`}
-              ref={cardRef}
+              className="jsy-duo-wrap"
+              ref={wrapRef}
+              onMouseMove={onMouseMove}
+              onMouseLeave={onMouseLeave}
+              onMouseEnter={() => setHovering(true)}
             >
-              {/* FRONT face */}
-              <div className="jsy-face jsy-face-front">
-                <div className="jsy-card-bg" />
+              <canvas ref={canvasRef} className="jsy-canvas" aria-hidden="true" />
+
+              {/* Ambient glows */}
+              <div className="jsy-duo-glow jsy-duo-glow--a" aria-hidden="true" />
+              <div className="jsy-duo-glow jsy-duo-glow--b" aria-hidden="true" />
+
+              {/* Secondary card — white edition, behind */}
+              <div className="jsy-duo-card jsy-duo-card--secondary">
+                <div className="jsy-duo-card-bg jsy-duo-card-bg--light" />
                 <img
-                  src={jersey.cleanSrc}
-                  alt={jersey.label}
-                  className="jsy-card-img"
+                  src="/main-jersey.webp"
+                  alt="ZYVORA white edition jersey"
+                  className="jsy-duo-img"
+                  draggable={false}
+                />
+                <div className="jsy-holo"   aria-hidden="true" />
+                <div className={`jsy-sweep${hovering ? ' jsy-sweep--run' : ''}`} aria-hidden="true" />
+                <span className="jsy-duo-label">WHITE EDITION</span>
+              </div>
+
+              {/* Primary card — dark jersey, front */}
+              <div className="jsy-duo-card jsy-duo-card--primary">
+                <div className="jsy-duo-card-bg" />
+                <img
+                  src="/jersey-4-removebg.webp"
+                  alt="ZYVORA forge jersey"
+                  className="jsy-duo-img"
                   draggable={false}
                 />
                 <div className="jsy-holo"   aria-hidden="true" />
                 <div className="jsy-light"  aria-hidden="true" />
                 <div className="jsy-fabric" aria-hidden="true" />
                 <div className={`jsy-sweep${hovering ? ' jsy-sweep--run' : ''}`} aria-hidden="true" />
-                <div className="jsy-card-badge">
-                  <span className="jsy-card-badge-dot" />
-                  {jersey.tag}
-                </div>
+                <span className="jsy-duo-label jsy-duo-label--orange">THE FORGE KIT</span>
               </div>
-
-              {/* BACK face — jersey dimmed + name/number overlaid on it */}
-              <div className="jsy-face jsy-face-back">
-                <div className="jsy-card-bg" />
-                <img
-                  src={jersey.cleanSrc}
-                  alt="Jersey back preview"
-                  className="jsy-card-img jsy-card-img--back"
-                  draggable={false}
-                />
-                {/* Name + number float over the jersey torso */}
-                <div className="jsy-on-jersey" aria-hidden="true">
-                  <div className="jsy-on-name">{playerName}</div>
-                  <div className="jsy-on-num">{playerNum}</div>
-                </div>
-                <div className="jsy-fabric" aria-hidden="true" />
-              </div>
-            </div>
-
-            {/* Controls */}
-            <button
-              className="jsy-flip-btn"
-              onClick={() => setFlipped(f => !f)}
-              aria-label={flipped ? 'Show front' : 'Preview on back'}
-            >
-              <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
-                <path d="M3 10a7 7 0 1 1 14 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                <path d="M17 10l-2-2.5M17 10l-2 2.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {flipped ? 'Front view' : 'Back view'}
-            </button>
-
-            <div className="jsy-dots" role="tablist" aria-label="Jersey version">
-              {JERSEYS.map((j, i) => (
-                <button
-                  key={j.id}
-                  className={`jsy-dot${i === activeIdx ? ' jsy-dot--active' : ''}`}
-                  onClick={() => { setActiveIdx(i); setFlipped(false) }}
-                  role="tab"
-                  aria-selected={i === activeIdx}
-                  aria-label={j.season}
-                />
-              ))}
             </div>
           </div>
 
-          {/* Right: info + customizer */}
+          {/* Right: info */}
           <div className="jsy-stage-right">
             <div className="jsy-stage-eyebrow">
-              <span className="jsy-stage-tag">{jersey.season}</span>
-              <span className="jsy-stage-year">{jersey.year}</span>
+              <span className="jsy-stage-tag">Season 01</span>
+              <span className="jsy-stage-year">2025</span>
             </div>
 
-            <h2 className="jsy-stage-title">{jersey.label}</h2>
-            <p className="jsy-stage-detail">{jersey.detail}</p>
+            <h2 className="jsy-stage-title">THE FORGE KIT</h2>
+            <p className="jsy-stage-detail">
+              Dual-layer performance weave. Heat-bonded ZYVORA crest.
+              Worn by every player who competes under the mark.
+            </p>
 
             <div className="jsy-pills">
               {['Roster Exclusive', 'Performance Weave', 'ZYVORA Certified'].map(p => (
@@ -325,46 +255,26 @@ export default function Jerseys() {
               ))}
             </div>
 
-            {/* Customization */}
-            <div className="jsy-custom" id="customise">
-              <div className="jsy-custom-label">
-                <span className="jsy-custom-dot" />
-                Personalise your back
+            <div className="jsy-duo-specs">
+              <div className="jsy-spec">
+                <span className="jsy-spec-val">2</span>
+                <span className="jsy-spec-key">Editions</span>
               </div>
-
-              <div className="jsy-custom-field">
-                <label className="jsy-field-label">Player name</label>
-                <input
-                  className="jsy-field-input"
-                  type="text"
-                  maxLength={14}
-                  value={playerName === 'YOUR NAME' ? '' : playerName}
-                  placeholder="YOUR NAME"
-                  onChange={e => setPlayerName(e.target.value.toUpperCase() || 'YOUR NAME')}
-                  aria-label="Player name"
-                />
+              <div className="jsy-spec-div" />
+              <div className="jsy-spec">
+                <span className="jsy-spec-val">100%</span>
+                <span className="jsy-spec-key">Roster Only</span>
               </div>
-
-              <div className="jsy-custom-field">
-                <label className="jsy-field-label">Squad number (00–99)</label>
-                <input
-                  className="jsy-num-input"
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={2}
-                  value={numRaw}
-                  placeholder="00"
-                  onChange={e => onNumChange(e.target.value)}
-                  onBlur={onNumBlur}
-                  aria-label="Squad number"
-                />
+              <div className="jsy-spec-div" />
+              <div className="jsy-spec">
+                <span className="jsy-spec-val">0₹</span>
+                <span className="jsy-spec-key">If you earn it</span>
               </div>
-
-              <button className="jsy-preview-btn" onClick={() => setFlipped(true)}>
-                Preview on jersey <Arrow />
-              </button>
             </div>
+
+            <Link className="btn jsy-btn-primary jsy-duo-cta" to="/players">
+              Apply to play for free <Arrow />
+            </Link>
           </div>
         </div>
       </section>
