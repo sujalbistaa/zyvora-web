@@ -4,18 +4,18 @@ import { useReveal } from '../hooks/useReveal'
 
 const JERSEYS = [
   {
-    id: 'jersey-3',
-    src: '/jersey-3.webp',
-    label: 'ZYVORA KIT — Edition 01',
-    desc: 'The official ZYVORA competitive jersey. Worn by players representing the org in official events and broadcasts.',
-    tag: 'Competition Kit',
+    id: 'main-jersey',
+    src: '/main-jersey.webp',
+    label: 'ZYVORA KIT — Season 01',
+    desc: 'The Season 01 official kit, front and back. The full ZYVORA identity on a single piece.',
+    tag: 'Season Kit',
   },
   {
-    id: 'jersey-4',
-    src: '/jersey-4.webp',
-    label: 'ZYVORA KIT — Edition 02',
-    desc: 'Alternate colourway for the ZYVORA roster. Clean, sharp, and built to stand out on any broadcast.',
-    tag: 'Alternate Kit',
+    id: 'jersey-4-removebg',
+    src: '/jersey-4-removebg.webp',
+    label: 'ZYVORA KIT — Season 02',
+    desc: 'Clean-cut edition with transparent background — designed for overlays, broadcast graphics, and content production.',
+    tag: 'Broadcast Edition',
   },
 ]
 

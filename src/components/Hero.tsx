@@ -54,16 +54,21 @@ export default function Hero() {
 
         {/* ── right: jersey ── */}
         <div className="forge-jersey-side">
-          <img
-            src="/jersey-3.webp"
-            alt="ZYVORA official jersey"
-            className="forge-jersey-img"
-          />
-          <div className="forge-kit-tag">
-            <span className="forge-kit-label">Official Kit</span>
-            <Link to="/jerseys" className="forge-kit-link">
-              View all <Arrow />
-            </Link>
+          <div className="forge-jersey-frame">
+            <img
+              src="/main-jersey.webp"
+              alt="ZYVORA official jersey — front and back"
+              className="forge-jersey-img"
+              width="672"
+              height="372"
+            />
+            <div className="forge-kit-pill">
+              <span className="forge-kit-dot" aria-hidden="true" />
+              Official Kit · Season 01
+              <Link to="/jerseys" className="forge-kit-link">
+                View jerseys <Arrow />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
