@@ -127,14 +127,14 @@ nav .navlink:hover::after { width: 100%; }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover; z-index: 0; pointer-events: none;
-  filter: blur(3.5px); transform: scale(1.07);
+  filter: blur(1px); transform: scale(1.02);
   will-change: opacity;
 }
 
-/* dark overlay — video handles its own opacity; overlay provides text legibility */
+/* dark overlay — just enough to keep text readable */
 .hero-v-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: rgba(0,0,0,.72);
+  background: rgba(0,0,0,.45);
 }
 
 /* particle canvas */
