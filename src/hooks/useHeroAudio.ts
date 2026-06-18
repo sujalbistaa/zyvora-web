@@ -11,7 +11,7 @@ const FADE_OUT     = 0.8
 //  ③ On every subsequent loop, restart from 21s
 const INTRO_START  = 73   // 1:13
 const INTRO_END    = 93   // INTRO_START + 20 s
-const LOOP_FROM    = 21   // after intro, loop from here
+const LOOP_FROM    = 30   // after intro, loop from here
 
 export function useHeroAudio() {
   const [enabled, setEnabled] = useState(false)

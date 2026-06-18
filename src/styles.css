@@ -126,8 +126,8 @@ nav .navlink:hover::after { width: 100%; }
 .hero-bg-video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; z-index: 0; pointer-events: none;
-  filter: none; transform: none;
+  object-fit: cover; object-position: 30% center;
+  z-index: 0; pointer-events: none;
   will-change: opacity;
 }
 
