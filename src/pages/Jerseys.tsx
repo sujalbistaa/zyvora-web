@@ -63,7 +63,7 @@ export default function Jerseys() {
             <span className="tick-molten" /> Official players only
           </div>
           <h2 className="fx-head">Earn your kit.</h2>
-          <p style={{ color: 'var(--ink-soft)', fontSize: 17, maxWidth: 520, marginBottom: 32 }}>
+          <p style={{ fontSize: 17, maxWidth: 520, marginBottom: 32 }}>
             ZYVORA jerseys are issued to official roster players and partners. Want to rep the forge?
             Apply to join the roster or partner with us.
           </p>
