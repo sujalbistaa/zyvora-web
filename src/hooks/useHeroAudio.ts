@@ -5,9 +5,9 @@ const TARGET_VOL  = 0.45
 const FADE_IN     = 1.6
 const FADE_OUT    = 0.8
 
-// Simple 20-second loop: 1:14 → 1:34, repeating forever
-const LOOP_START = 74   // 1:14
-const LOOP_END   = 94   // 1:14 + 20 s
+// 20-second loop segment: 1:14 → 1:34
+const LOOP_START = 74
+const LOOP_END   = 94
 
 export function useHeroAudio() {
   const [enabled, setEnabled] = useState(false)
@@ -36,7 +36,7 @@ export function useHeroAudio() {
     setTimeout(() => { audio.pause() }, (FADE_OUT + 0.1) * 1000)
   }, [])
 
-  // ── Lazy init (runs once on first enable) ─────────────────
+  // Runs exactly once on first enable
   const init = useCallback(async () => {
     if (readyRef.current) return
     readyRef.current = true
@@ -47,8 +47,17 @@ export function useHeroAudio() {
     audio.preload = 'auto'
     audioRef.current = audio
 
-    // Loop guard: when we reach LOOP_END, jump back to LOOP_START
+    // Strategy: start playing from position 0 immediately (browser already has
+    // this data, no range request needed → no stall). Jump to LOOP_START on the
+    // very first timeupdate tick (≤250ms). Gain is still 0 during that window
+    // so the user hears nothing before the jump.
+    let jumpedToLoop = false
     const onTimeUpdate = () => {
+      if (!jumpedToLoop) {
+        jumpedToLoop = true
+        audio.currentTime = LOOP_START
+        return
+      }
       if (audio.currentTime >= LOOP_END) {
         audio.currentTime = LOOP_START
       }
@@ -70,23 +79,15 @@ export function useHeroAudio() {
     ctxRef.current  = ctx
     gainRef.current = gain
 
+    // Resume AudioContext (required after user gesture on iOS/Safari)
     await ctx.resume().catch(() => {})
 
-    // Wait for metadata (just the file header — fast, <500ms).
-    // After this the browser can make a targeted range-request for LOOP_START,
-    // so playback streams continuously without 1-second buffer stalls.
-    await new Promise<void>(resolve => {
-      if (audio.readyState >= HTMLMediaElement.HAVE_METADATA) { resolve(); return }
-      audio.addEventListener('loadedmetadata', () => resolve(), { once: true })
-      setTimeout(resolve, 3000) // fallback
-    })
-
-    audio.currentTime = LOOP_START
+    // Play from 0 — data is immediately available, no HTTP range request
     await audio.play().catch(() => {})
     setLoading(false)
   }, [])
 
-  // ── Public toggle ──────────────────────────────────────────
+  // Toggle — single clear code path, no competing listeners
   const toggle = useCallback(async () => {
     const next = !enabled
     setEnabled(next)
@@ -105,25 +106,7 @@ export function useHeroAudio() {
     }
   }, [enabled, init, fadeIn, fadeOut])
 
-  // ── Auto-restore on return visit ───────────────────────────
-  useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY) !== 'on') return
-    const restore = async () => {
-      cleanup()
-      await init()
-      fadeIn()
-      setEnabled(true)
-    }
-    const cleanup = () => {
-      window.removeEventListener('pointerdown', restore)
-      window.removeEventListener('keydown',     restore)
-    }
-    window.addEventListener('pointerdown', restore, { once: true })
-    window.addEventListener('keydown',     restore, { once: true })
-    return cleanup
-  }, [init, fadeIn])
-
-  // ── Teardown ───────────────────────────────────────────────
+  // Teardown
   useEffect(() => {
     return () => {
       audioRef.current?.pause()
