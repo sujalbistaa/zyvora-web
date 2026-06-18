@@ -1,29 +1,53 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const STORAGE_KEY = 'zyvora-sound'
+const STORAGE_KEY  = 'zyvora-sound'
 const TARGET_VOL   = 0.45
-const FADE_IN      = 1.6   // seconds
+const FADE_IN      = 1.6
 const FADE_OUT     = 0.8
 
+// Playback map:
+//  ① Start at 1:13 (73s), play for 20 s  →  ends at 93s
+//  ② Jump to 21s, play to end of track
+//  ③ On every subsequent loop, restart from 21s
+const INTRO_START  = 73   // 1:13
+const INTRO_END    = 93   // INTRO_START + 20 s
+const LOOP_FROM    = 21   // after intro, loop from here
+
 export function useHeroAudio() {
-  const [enabled, setEnabled]   = useState(false)
-  const [loading, setLoading]   = useState(false)
+  const [enabled, setEnabled] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const audioRef  = useRef<HTMLAudioElement | null>(null)
-  const ctxRef    = useRef<AudioContext | null>(null)
-  const gainRef   = useRef<GainNode | null>(null)
-  const readyRef  = useRef(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const ctxRef   = useRef<AudioContext | null>(null)
+  const gainRef  = useRef<GainNode | null>(null)
+  const readyRef = useRef(false)
 
-  // ── Lazy init (only inside a user-gesture) ──────────────────
+  // ── Lazy init ──────────────────────────────────────────────
   const init = useCallback(async () => {
     if (readyRef.current) return
     readyRef.current = true
     setLoading(true)
 
     const audio = new Audio('/hero-audio.m4a')
-    audio.loop    = true
+    audio.loop    = false   // we manage looping manually
     audio.preload = 'auto'
     audioRef.current = audio
+
+    // ① intro segment guard: when we pass 93 s, jump to 21 s
+    const onTimeUpdate = () => {
+      if (audio.currentTime >= INTRO_END) {
+        audio.removeEventListener('timeupdate', onTimeUpdate)
+        audio.currentTime = LOOP_FROM
+      }
+    }
+    // ② after each natural end, restart from 21 s
+    const onEnded = () => {
+      audio.currentTime = LOOP_FROM
+      audio.play().catch(() => {})
+    }
+
+    audio.addEventListener('timeupdate', onTimeUpdate)
+    audio.addEventListener('ended', onEnded)
 
     const Ctx = window.AudioContext ?? (window as never as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
     const ctx  = new Ctx()
@@ -35,7 +59,7 @@ export function useHeroAudio() {
     ctxRef.current  = ctx
     gainRef.current = gain
 
-    audio.currentTime = 74
+    audio.currentTime = INTRO_START
     await audio.play().catch(() => {})
     setLoading(false)
   }, [])
@@ -58,43 +82,39 @@ export function useHeroAudio() {
     setTimeout(() => { audio.pause() }, (FADE_OUT + 0.1) * 1000)
   }, [])
 
-  // ── Public toggle ────────────────────────────────────────────
+  // ── Public toggle ──────────────────────────────────────────
   const toggle = useCallback(async () => {
     const next = !enabled
     setEnabled(next)
     localStorage.setItem(STORAGE_KEY, next ? 'on' : 'off')
-
     if (next) {
       await init()
-      if (audioRef.current?.paused) audioRef.current?.play().catch(() => {})
+      if (audioRef.current?.paused) audioRef.current.play().catch(() => {})
       fadeIn()
     } else {
       fadeOut()
     }
   }, [enabled, init, fadeIn, fadeOut])
 
-  // ── Auto-restore on return visit (waits for first interaction) ─
+  // ── Auto-restore on return visit ───────────────────────────
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY) !== 'on') return
-
     const restore = async () => {
       cleanup()
       await init()
       fadeIn()
       setEnabled(true)
     }
-
     const cleanup = () => {
       window.removeEventListener('pointerdown', restore)
       window.removeEventListener('keydown',     restore)
     }
-
     window.addEventListener('pointerdown', restore, { once: true })
     window.addEventListener('keydown',     restore, { once: true })
     return cleanup
   }, [init, fadeIn])
 
-  // ── Teardown ─────────────────────────────────────────────────
+  // ── Teardown ───────────────────────────────────────────────
   useEffect(() => {
     return () => {
       audioRef.current?.pause()
