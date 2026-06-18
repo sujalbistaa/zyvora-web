@@ -1306,3 +1306,528 @@ footer .watermark {
   .tnmt-cd-colon { font-size: clamp(18px, 6vw, 34px); }
   .tnmt-stats-bar { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   JERSEY PREMIUM PAGE
+   ============================================================ */
+
+.jsy-page {
+  background: #080A0C;
+  color: var(--bone);
+  overflow-x: hidden;
+}
+
+/* ── §1 Hero ── */
+.jsy-hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.jsy-hero::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 80% at 65% 50%, rgba(255,106,0,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(232,64,31,.05) 0%, transparent 60%);
+}
+
+.jsy-hero-grid {
+  max-width: 1240px; margin: 0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+
+.jsy-hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(236,237,233,.45); margin-bottom: 32px;
+}
+.jsy-hero-divider {
+  display: block; width: 1px; height: 14px;
+  background: rgba(255,106,0,.4);
+}
+.jsy-hero-tag { color: #FF6A00; }
+
+/* Kinetic title */
+.jky-title {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: clamp(52px, 7vw, 96px); line-height: .92; letter-spacing: -.02em;
+  text-transform: uppercase; color: var(--bone);
+  perspective: 600px;
+  display: block; margin-bottom: 28px;
+}
+.jky-char {
+  display: inline-block;
+  transform-origin: bottom center;
+}
+.jky-space { display: inline-block; width: .3em; }
+.jky-orange { color: #FF6A00; }
+
+.jsy-hero-sub {
+  font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6;
+  color: rgba(236,237,233,.55); max-width: 42ch; margin-bottom: 40px;
+}
+.jsy-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.jsy-btn-primary {
+  background: #FF6A00; color: #fff; border: 1px solid #FF6A00;
+  padding: 13px 26px; display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 700; letter-spacing: .02em;
+  transition: background .2s, box-shadow .2s;
+}
+.jsy-btn-primary:hover {
+  background: #e85d00;
+  box-shadow: 0 0 28px rgba(255,106,0,.4);
+}
+.jsy-btn-ghost {
+  background: transparent; color: rgba(236,237,233,.7);
+  border: 1px solid rgba(236,237,233,.18); padding: 13px 26px;
+  transition: border-color .2s, color .2s;
+}
+.jsy-btn-ghost:hover { border-color: rgba(255,106,0,.4); color: #FF6A00; }
+
+/* floating jersey */
+.jsy-hero-float {
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.jsy-hero-float-glow {
+  position: absolute; width: 70%; height: 70%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,106,0,.18) 0%, transparent 70%);
+  filter: blur(40px); pointer-events: none;
+  animation: jsy-glow-pulse 3s ease-in-out infinite alternate;
+}
+@keyframes jsy-glow-pulse {
+  from { opacity: .6; transform: scale(.9); }
+  to   { opacity: 1;  transform: scale(1.1); }
+}
+.jsy-hero-float-img {
+  width: 100%; max-width: 440px; height: auto;
+  filter: drop-shadow(0 40px 80px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(255,106,0,.12));
+  animation: jsy-float 4s ease-in-out infinite;
+  position: relative; z-index: 1;
+}
+@keyframes jsy-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-16px); }
+}
+
+/* scroll cue */
+.jsy-hero-scroll-cue {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.jsy-scroll-label {
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(236,237,233,.3);
+}
+.jsy-scroll-line {
+  display: block; width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(255,106,0,.6), transparent);
+  animation: jsy-scroll-drop 1.6s ease-in-out infinite;
+}
+@keyframes jsy-scroll-drop {
+  0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: scaleY(1); transform-origin: top; }
+}
+
+/* ── §2 Stage ── */
+.jsy-stage-section {
+  padding: 100px 0 120px;
+  background: #080A0C;
+  position: relative;
+}
+.jsy-stage-section::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,106,0,.3), transparent);
+}
+
+.jsy-stage-wrap {
+  max-width: 1240px; margin: 0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+
+/* canvas */
+.jsy-canvas {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* left */
+.jsy-stage-left {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
+
+/* 3D card — tilt via perspective() in transform; faces swap with opacity */
+.jsy-card {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 440px; aspect-ratio: 3/4;
+  cursor: crosshair;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .06s linear;
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08),
+              inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* faces sit on top of each other, swap with opacity */
+.jsy-face {
+  position: absolute; inset: 0;
+  transition: opacity .45s ease;
+}
+.jsy-face-front { opacity: 1; z-index: 2; }
+.jsy-face-back  { opacity: 0; z-index: 1; pointer-events: none; }
+.jsy-card--flipped .jsy-face-front { opacity: 0; pointer-events: none; }
+.jsy-card--flipped .jsy-face-back  { opacity: 1; z-index: 2; pointer-events: auto; }
+
+/* Front face layers */
+.jsy-card-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 90% at 50% 40%, #141820 0%, #0a0b0f 100%);
+}
+.jsy-card-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; padding: 24px 32px;
+  filter: drop-shadow(0 20px 48px rgba(0,0,0,.5));
+  z-index: 1; pointer-events: none;
+  transition: transform .3s var(--easing);
+}
+.jsy-face-front:hover .jsy-card-img { transform: scale(1.03); }
+
+/* Holographic overlay */
+.jsy-holo {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: conic-gradient(
+    from var(--holo-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    rgba(255,106,0,.22) 40deg,
+    rgba(255,200,50,.12) 80deg,
+    rgba(100,200,255,.1) 120deg,
+    transparent 160deg,
+    rgba(255,255,255,.07) 220deg,
+    transparent 280deg,
+    rgba(255,106,0,.18) 320deg,
+    transparent 360deg
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.jsy-face-front:hover .jsy-holo { opacity: 1; }
+
+/* Specular light */
+.jsy-light {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(
+    circle 200px at var(--lx, 50%) var(--ly, 50%),
+    rgba(255,106,0,.18) 0%,
+    rgba(255,160,60,.06) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  opacity: 0; transition: opacity .25s;
+}
+.jsy-face-front:hover .jsy-light { opacity: 1; }
+
+/* Fabric texture */
+.jsy-fabric {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0px, transparent 1px, transparent 4px);
+  mix-blend-mode: overlay;
+}
+
+/* Light sweep */
+.jsy-sweep {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  overflow: hidden;
+}
+.jsy-sweep::after {
+  content: "";
+  position: absolute; top: 0; left: -120%; width: 80%; height: 100%;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.08) 50%, transparent 70%);
+  transform: skewX(-15deg);
+}
+.jsy-sweep--run::after {
+  animation: jsy-sweep-run 2.4s ease-in-out infinite;
+}
+@keyframes jsy-sweep-run {
+  0%   { left: -120%; }
+  100% { left: 140%; }
+}
+
+/* Season badge */
+.jsy-card-badge {
+  position: absolute; bottom: 18px; left: 18px; z-index: 6;
+  display: flex; align-items: center; gap: 7px;
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(236,237,233,.7);
+  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  padding: 6px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.jsy-card-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #FF6A00;
+  box-shadow: 0 0 6px #FF6A00;
+  animation: jsy-badge-pulse 2s ease-in-out infinite;
+}
+@keyframes jsy-badge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .4; }
+}
+
+/* Back face background */
+.jsy-face-back .jsy-card-bg {
+  background: radial-gradient(ellipse 80% 90% at 50% 40%, #141820 0%, #0a0b0f 100%);
+}
+
+/* Jersey image on back face — dimmed so text pops */
+.jsy-card-img--back {
+  filter: drop-shadow(0 20px 48px rgba(0,0,0,.5)) brightness(0.65) saturate(0.8);
+}
+
+/* Name + number overlay — sits in the jersey torso area */
+.jsy-on-jersey {
+  position: absolute;
+  top: 22%; left: 50%;
+  transform: translateX(-50%);
+  z-index: 3; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0;
+  width: 80%;
+}
+.jsy-on-name {
+  font-family: "Archivo", sans-serif; font-weight: 900;
+  font-size: clamp(12px, 2.4vw, 16px); letter-spacing: .28em;
+  text-transform: uppercase; color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,.8), 0 0 20px rgba(0,0,0,.5);
+}
+.jsy-on-num {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: clamp(68px, 12vw, 96px); line-height: .85;
+  letter-spacing: -.03em; color: #fff;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.6),
+    0 0 32px rgba(255,106,0,.25),
+    0 0 60px rgba(0,0,0,.4);
+}
+
+/* Flip + dots controls */
+.jsy-flip-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(236,237,233,.5);
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+  padding: 9px 18px; border-radius: 20px; cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.jsy-flip-btn:hover {
+  color: #FF6A00; border-color: rgba(255,106,0,.3); background: rgba(255,106,0,.05);
+}
+.jsy-dots { display: flex; gap: 10px; }
+.jsy-dot {
+  width: 8px; height: 8px; border-radius: 50%; cursor: pointer;
+  background: rgba(255,255,255,.2); border: none;
+  transition: background .2s, transform .2s;
+}
+.jsy-dot--active { background: #FF6A00; transform: scale(1.3); }
+
+/* ── Stage right panel ── */
+.jsy-stage-eyebrow {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.jsy-stage-tag {
+  font-family: "Space Mono", monospace; font-size: 10.5px; letter-spacing: .18em;
+  text-transform: uppercase; color: #FF6A00;
+  border: 1px solid rgba(255,106,0,.25); padding: 4px 10px; border-radius: 3px;
+}
+.jsy-stage-year {
+  font-family: "Space Mono", monospace; font-size: 10.5px; letter-spacing: .12em;
+  color: rgba(236,237,233,.3);
+}
+.jsy-stage-title {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: clamp(32px, 4vw, 52px); line-height: .95; letter-spacing: -.01em;
+  text-transform: uppercase; color: var(--bone); margin-bottom: 20px;
+}
+.jsy-stage-detail {
+  font-size: 16px; line-height: 1.65; color: rgba(236,237,233,.5); margin-bottom: 28px;
+}
+
+/* Pills */
+.jsy-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 44px; }
+.jsy-pill {
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(236,237,233,.4);
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  padding: 5px 12px; border-radius: 3px;
+}
+
+/* Customization panel */
+.jsy-custom {
+  border-top: 1px solid rgba(255,255,255,.08); padding-top: 36px;
+}
+.jsy-custom-label {
+  display: flex; align-items: center; gap: 9px;
+  font-family: "Space Mono", monospace; font-size: 10.5px; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(236,237,233,.4); margin-bottom: 28px;
+}
+.jsy-custom-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #FF6A00; box-shadow: 0 0 8px rgba(255,106,0,.6);
+}
+.jsy-custom-field { margin-bottom: 22px; }
+.jsy-field-label {
+  display: block; font-family: "Space Mono", monospace; font-size: 10px;
+  letter-spacing: .16em; text-transform: uppercase; color: rgba(236,237,233,.35);
+  margin-bottom: 10px;
+}
+.jsy-field-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  color: var(--bone); font-family: "Archivo", sans-serif; font-weight: 800;
+  font-size: 16px; letter-spacing: .08em; text-transform: uppercase;
+  border-radius: 6px; outline: none;
+  transition: border-color .2s, background .2s;
+}
+.jsy-field-input::placeholder { color: rgba(236,237,233,.2); font-weight: 400; }
+.jsy-field-input:focus {
+  border-color: rgba(255,106,0,.5); background: rgba(255,106,0,.04);
+}
+.jsy-num-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  color: #fff; font-family: "Archivo", sans-serif; font-weight: 900;
+  font-size: 22px; letter-spacing: .12em; text-align: center;
+  border-radius: 6px; outline: none;
+  transition: border-color .2s, background .2s;
+  -moz-appearance: textfield;
+}
+.jsy-num-input::-webkit-outer-spin-button,
+.jsy-num-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.jsy-num-input::placeholder { color: rgba(236,237,233,.2); font-weight: 400; }
+.jsy-num-input:focus {
+  border-color: rgba(255,106,0,.5); background: rgba(255,106,0,.04);
+}
+.jsy-preview-btn {
+  margin-top: 28px; display: inline-flex; align-items: center; gap: 8px;
+  font-family: "Archivo", sans-serif; font-weight: 700; font-size: 14px;
+  letter-spacing: .04em;
+  background: transparent; border: 1px solid rgba(255,106,0,.35);
+  color: rgba(255,106,0,.85); padding: 12px 22px; border-radius: 6px;
+  cursor: pointer; transition: background .2s, border-color .2s, color .2s;
+}
+.jsy-preview-btn:hover {
+  background: rgba(255,106,0,.1); border-color: #FF6A00; color: #FF6A00;
+}
+
+/* ── §3 Story chapters ── */
+.jsy-story {
+  padding: 120px 0;
+  background: var(--paper);
+  position: relative;
+}
+.jsy-story::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--line);
+}
+
+.jsy-chapter {
+  max-width: 640px; padding: 72px 0;
+  border-bottom: 1px solid var(--line);
+}
+.jsy-chapter:last-child { border-bottom: none; }
+.jsy-chapter--right {
+  margin-left: auto;
+}
+
+.jsy-ch-label {
+  font-family: "Space Mono", monospace; font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--molten); margin-bottom: 18px;
+}
+.jsy-ch-line {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: clamp(36px, 5vw, 64px); line-height: .92; letter-spacing: -.02em;
+  text-transform: uppercase; color: var(--ink); margin-bottom: 24px;
+}
+.jsy-ch-body {
+  font-size: 16px; line-height: 1.7; color: var(--ink-soft); max-width: 52ch;
+}
+
+.jsy-ch-stats {
+  display: flex; gap: 40px; margin-top: 40px;
+}
+.jsy-ch-stat {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.jsy-ch-stat-v {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: 40px; line-height: 1; letter-spacing: -.02em; color: var(--ink);
+}
+.jsy-ch-stat-l {
+  font-family: "Space Mono", monospace; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+
+/* ── §3 CTA ── */
+.jsy-cta {
+  background: #080A0C; padding: 140px 48px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.jsy-cta-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(255,106,0,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.jsy-cta-inner {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.jsy-cta-title {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: clamp(44px, 7vw, 96px); line-height: .9; letter-spacing: -.025em;
+  text-transform: uppercase; color: var(--bone);
+  margin-top: 28px; margin-bottom: 24px;
+}
+.jsy-cta-orange { color: #FF6A00; }
+.jsy-cta-body {
+  font-size: 17px; line-height: 1.65; color: rgba(236,237,233,.45);
+  max-width: 44ch; margin-bottom: 44px;
+}
+.jsy-cta-actions {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+}
+.jsy-btn-ghost-dark {
+  color: rgba(236,237,233,.6); border-color: rgba(255,255,255,.15);
+}
+.jsy-btn-ghost-dark:hover { color: var(--bone); border-color: rgba(255,255,255,.4); }
+
+/* ── Jersey responsive ── */
+@media (max-width: 1000px) {
+  .jsy-hero-grid  { grid-template-columns: 1fr; gap: 48px; padding: 0 32px; }
+  .jsy-hero-float { display: none; }
+  .jsy-stage-wrap { grid-template-columns: 1fr; gap: 52px; padding: 0 32px; }
+  .jsy-stage-left { align-items: center; }
+  .jsy-card       { max-width: 380px; }
+  .jsy-chapter    { max-width: 100%; }
+  .jsy-chapter--right { margin-left: 0; }
+}
+@media (max-width: 600px) {
+  .jsy-hero-grid, .jsy-stage-wrap { padding: 0 20px; }
+  .jsy-card     { max-width: 320px; }
+  .jky-title    { font-size: clamp(42px, 13vw, 72px); }
+  .jsy-ch-stats { flex-direction: column; gap: 24px; }
+  .jsy-hero-ctas { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jsy-hero-float-img { animation: none; }
+  .jsy-hero-float-glow { animation: none; }
+  .jsy-sweep--run::after { animation: none; }
+  .jsy-scroll-line { animation: none; }
+}
