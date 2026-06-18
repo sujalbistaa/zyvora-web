@@ -808,14 +808,24 @@ footer .watermark {
   box-shadow: 0 0 8px rgba(232,64,31,.9);
 }
 
-.tnmt-hero-org {
-  font-family: "Space Mono", monospace; font-size: 11px;
-  letter-spacing: .38em; text-transform: uppercase;
-  color: rgba(236,237,233,.38); margin-bottom: 14px;
+.tnmt-hero-brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.tnmt-brand-name {
+  font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
+  font-size: 22px; letter-spacing: .12em; color: var(--bone);
+}
+.tnmt-brand-v { color: var(--molten); }
+.tnmt-brand-presents {
+  font-family: "Space Mono", monospace; font-size: 13px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(236,237,233,.75);
+  border-left: 1px solid rgba(236,237,233,.3); padding-left: 12px; margin-left: 2px;
 }
 .tnmt-hero-title {
   font-family: "Archivo", sans-serif; font-weight: 900; font-stretch: expanded;
-  font-size: clamp(52px, 9.5vw, 118px); line-height: .88;
+  font-size: clamp(64px, 12vw, 148px); line-height: .88;
   letter-spacing: -.025em; text-transform: uppercase; color: #fff;
   margin-bottom: 42px;
   text-shadow: 0 4px 48px rgba(0,0,0,.5);
@@ -824,7 +834,7 @@ footer .watermark {
 
 /* hero stats bar — glassmorphism */
 .tnmt-stats-bar {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   background: rgba(255,255,255,.05);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,.1);
@@ -1024,6 +1034,41 @@ footer .watermark {
 }
 .tnmt-tl-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
 
+/* ── Squad / Register CTA — light section with video backdrop ── */
+.squad-cta {
+  position: relative; overflow: hidden;
+  padding: 112px 0; text-align: center;
+  background: var(--bone);
+}
+.squad-cta-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; pointer-events: none;
+}
+.squad-cta-overlay {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,14,.38) 0%,
+    rgba(10,10,14,.52) 50%,
+    rgba(10,10,14,.62) 100%
+  );
+}
+.squad-cta .wrap { position: relative; z-index: 2; }
+.squad-cta h2 { max-width: 14ch; margin: 0 auto 14px; color: #fff; }
+.squad-cta .molten { color: var(--molten); }
+.squad-cta p { color: rgba(236,237,233,.72); }
+.squad-cta strong { color: rgba(236,237,233,.95); }
+.squad-cta .eyebrow { color: rgba(236,237,233,.55); }
+.squad-cta .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.squad-cta .btn-ghost { color: var(--bone); border-color: rgba(236,237,233,.35); }
+.squad-cta .btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.5); transform: translateY(-2px); }
+.squad-cta-note {
+  font-family: "Space Mono", monospace; font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(236,237,233,.28); margin-top: 22px;
+}
+
 /* ── Tournament responsive ── */
 @media (max-width: 900px) {
   .tnmt-split { grid-template-columns: 1fr; gap: 52px; }
@@ -1033,15 +1078,8 @@ footer .watermark {
   .tnmt-prize-first { order: -1; border-left: 3px solid var(--molten); }
 }
 @media (max-width: 680px) {
-  .tnmt-stats-bar { grid-template-columns: 1fr 1fr; }
+  .tnmt-stats-bar { grid-template-columns: 1fr 1fr 1fr; }
   .tnmt-hstat + .tnmt-hstat::before { display: none; }
-  .tnmt-hstat:nth-child(odd)::after {
-    content: ""; position: absolute; right: 0; top: 20%; bottom: 20%;
-    width: 1px; background: rgba(255,255,255,.1);
-  }
-  .tnmt-hstat:nth-child(1), .tnmt-hstat:nth-child(2) {
-    border-bottom: 1px solid rgba(255,255,255,.1);
-  }
   .tnmt-tl-row { grid-template-columns: 56px 36px 1fr; }
   .tnmt-tl-date { font-size: 10px; padding-right: 10px; }
   .tnmt-prize-podium { max-width: 100%; }

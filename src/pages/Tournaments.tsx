@@ -1,9 +1,9 @@
 import { useEffect, useRef, Fragment } from 'react'
 import { useState } from 'react'
 import { useReveal } from '../hooks/useReveal'
-import { Arrow } from '../components/Icons'
+import { Arrow, LogoMark } from '../components/Icons'
 
-const TOURNAMENT_DATE = new Date('2026-07-01T10:00:00+05:45')
+const TOURNAMENT_DATE = new Date('2026-06-24T23:59:00+05:45')
 const TOTAL_SLOTS = 16
 const SLOTS_REMAINING = 4
 
@@ -33,27 +33,6 @@ const SCHEDULE = [
   { date: 'Jun 24', title: 'Registration Closes', desc: 'Final deadline. Late entries not accepted.' },
   { date: 'Jun 26', title: 'Team Confirmation', desc: 'Confirmed squads published on Discord.' },
   { date: 'Jul 01', title: 'Day 1 — Qualifiers', desc: 'Groups A & B play. Top 8 teams advance.' },
-]
-
-const PRIZES = [
-  { place: '2nd Place', amount: '₹3,000', pct: '30%', cls: 'tnmt-prize-second' },
-  { place: '1st Place', amount: '₹5,000', pct: '50%', cls: 'tnmt-prize-first', top: true },
-  { place: '3rd Place', amount: '₹2,000', pct: '20%', cls: 'tnmt-prize-third' },
-]
-
-const POINTS = [
-  { place: 'Booyah', pts: 12 },
-  { place: '2nd',    pts: 9  },
-  { place: '3rd',    pts: 8  },
-  { place: '4th',    pts: 7  },
-  { place: '5th',    pts: 6  },
-  { place: '6th',    pts: 5  },
-  { place: '7th',    pts: 4  },
-  { place: '8th',    pts: 3  },
-  { place: '9th',    pts: 2  },
-  { place: '10th',   pts: 1  },
-  { place: '11th',   pts: 0  },
-  { place: '12th',   pts: 0  },
 ]
 
 const INFO = [
@@ -99,12 +78,13 @@ export default function Tournaments() {
         <div className="tnmt-overlay" aria-hidden="true" />
 
         <div className="tnmt-hero-inner">
-          <div className="tnmt-live-badge reveal">
-            <span className="tnmt-live-dot" aria-hidden="true" />
-            Registration Open
+          <div className="tnmt-hero-brand reveal">
+            <LogoMark stroke="#ECEDE9" size={32} />
+            <span className="tnmt-brand-name">
+              ZY<span className="tnmt-brand-v">V</span>ORA<span className="tnmt-brand-v">.</span>
+            </span>
+            <span className="tnmt-brand-presents">Presents</span>
           </div>
-
-          <p className="tnmt-hero-org reveal">ZYVORA Presents</p>
 
           <h1 className="tnmt-hero-title reveal">
             Free Fire<br />
@@ -113,7 +93,7 @@ export default function Tournaments() {
 
           <div className="tnmt-stats-bar reveal" role="list" aria-label="Tournament details">
             <div className="tnmt-hstat" role="listitem">
-              <span className="tnmt-hstat-val">₹10,000</span>
+              <span className="tnmt-hstat-val">NPR 10,000</span>
               <span className="tnmt-hstat-lbl">Prize Pool</span>
             </div>
             <div className="tnmt-hstat" role="listitem">
@@ -124,13 +104,9 @@ export default function Tournaments() {
               <span className="tnmt-hstat-val">Jun 24</span>
               <span className="tnmt-hstat-lbl">Reg. Deadline</span>
             </div>
-            <div className="tnmt-hstat" role="listitem">
-              <span className="tnmt-hstat-val tnmt-hot">{SLOTS_REMAINING}/{TOTAL_SLOTS}</span>
-              <span className="tnmt-hstat-lbl">Slots Left</span>
-            </div>
           </div>
 
-          <div className="tnmt-countdown reveal" aria-label="Countdown to tournament">
+          <div className="tnmt-countdown reveal" aria-label="Registration closes in">
             {cdUnits.map((unit, i) => (
               <Fragment key={unit.l}>
                 <div className="tnmt-cd-unit">
@@ -153,7 +129,7 @@ export default function Tournaments() {
         </div>
       </section>
 
-      {/* ── INFO + PRIZE POOL ── */}
+      {/* ── ABOUT + KEY DATES ── */}
       <section className="tnmt-section" id="info">
         <div className="wrap">
           <div className="tnmt-split reveal">
@@ -176,38 +152,8 @@ export default function Tournaments() {
               </dl>
             </div>
 
-            {/* right: prize distribution */}
-            <div className="tnmt-split-col">
-              <div className="eyebrow eyebrow-flex">
-                <span className="tick" /> Prize Distribution
-              </div>
-              <h2 className="fx-head">Play for the win.</h2>
-              <div className="tnmt-prize-podium">
-                {PRIZES.map((p) => (
-                  <div className={`tnmt-prize-card ${p.cls}`} key={p.place}>
-                    {p.top && <div className="tnmt-prize-badge">Top Prize</div>}
-                    <span className="tnmt-prize-place">{p.place}</span>
-                    <div className="tnmt-prize-amount">{p.amount}</div>
-                    <div className="tnmt-prize-pct">{p.pct} of pool</div>
-                  </div>
-                ))}
-              </div>
-              <p className="tnmt-prize-footer">
-                Total: <strong>₹10,000</strong> — paid out within 72 hrs of completion.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SCHEDULE + POINTS TABLE ── */}
-      <section className="tnmt-section tnmt-alt" id="schedule">
-        <div className="wrap">
-          <div className="tnmt-split reveal">
-
-            {/* left: timeline */}
-            <div className="tnmt-split-col">
+            {/* right: schedule timeline */}
+            <div className="tnmt-split-col" id="schedule">
               <div className="eyebrow eyebrow-flex">
                 <span className="tick" /> Event Schedule
               </div>
@@ -229,47 +175,24 @@ export default function Tournaments() {
               </ol>
             </div>
 
-            {/* right: points table */}
-            <div className="tnmt-split-col">
-              <div className="eyebrow eyebrow-flex">
-                <span className="tick" /> Scoring System
-              </div>
-              <h2 className="fx-head">Points per match.</h2>
-              <table className="tnmt-pts-table" aria-label="Placement points">
-                <thead>
-                  <tr>
-                    <th>Placement</th>
-                    <th>Points</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {POINTS.map((row) => (
-                    <tr key={row.place} className={row.place === 'Booyah' ? 'tnmt-pts-top' : ''}>
-                      <td>{row.place}</td>
-                      <td>{row.pts}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="tnmt-pts-note">+ 1 point per kill · Points accumulate across all matches</p>
-            </div>
-
           </div>
         </div>
       </section>
 
       {/* ── REGISTER CTA ── */}
-      <section className="cta-band" id="register" style={{ background: 'var(--ink)' }}>
+      <section className="squad-cta" id="register">
+        <video className="squad-cta-video" src="/ff.mp4" autoPlay muted loop playsInline />
+        <div className="squad-cta-overlay" />
         <div className="wrap reveal">
-          <div className="eyebrow eyebrow-flex center" style={{ color: '#9aa0a8' }}>
+          <div className="eyebrow eyebrow-flex center">
             <span className="tick-molten" /> {SLOTS_REMAINING} Slots Remaining
           </div>
-          <h2 style={{ color: 'var(--bone)', maxWidth: '14ch', margin: '0 auto 14px' }}>
+          <h2>
             Your squad.<br />
             <span className="molten">One shot.</span>
           </h2>
-          <p style={{ color: 'rgba(236,237,233,.55)', maxWidth: '44ch', margin: '0 auto 30px', fontSize: 17 }}>
-            Registration closes <strong style={{ color: 'rgba(236,237,233,.8)' }}>June 24</strong>.
+          <p style={{ maxWidth: '44ch', margin: '0 auto 30px', fontSize: 17 }}>
+            Registration closes <strong>June 24</strong>.
             Once the {TOTAL_SLOTS} slots fill, doors close.
           </p>
           <div className="cta-row">
@@ -281,19 +204,11 @@ export default function Tournaments() {
             >
               Register on Discord <Arrow />
             </a>
-            <a
-              className="btn btn-ghost"
-              href="#info"
-              style={{ color: 'var(--bone)', borderColor: 'rgba(236,237,233,.3)' }}
-            >
+            <a className="btn btn-ghost" href="#info">
               Learn more
             </a>
           </div>
-          <p style={{
-            fontFamily: '"Space Mono", monospace', fontSize: 10,
-            letterSpacing: '.18em', textTransform: 'uppercase',
-            color: 'rgba(236,237,233,.22)', marginTop: 22,
-          }}>
+          <p className="squad-cta-note">
             Free to enter · No entry fee · Open to all players
           </p>
         </div>
