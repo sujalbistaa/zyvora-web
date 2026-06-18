@@ -302,8 +302,7 @@ export default function Hero() {
         aria-hidden="true"
         style={{ opacity: 0, willChange: 'opacity' }}
       >
-        <source src="/landing-video.webm" type="video/webm" />
-        <source src="/landing-video-fast.mp4" type="video/mp4" />
+        <source src="/landing-video-web.mp4" type="video/mp4" />
       </video>
 
       <div className="hero-v-overlay" aria-hidden="true" />
