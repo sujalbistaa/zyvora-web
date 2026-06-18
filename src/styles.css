@@ -131,10 +131,10 @@ nav .navlink:hover::after { width: 100%; }
   will-change: opacity;
 }
 
-/* dark overlay */
+/* dark overlay — video handles its own opacity; overlay provides text legibility */
 .hero-v-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: rgba(0,0,0,.80);
+  background: rgba(0,0,0,.72);
 }
 
 /* particle canvas */
@@ -201,6 +201,7 @@ nav .navlink:hover::after { width: 100%; }
   display: block; position: relative; overflow: hidden;
   will-change: clip-path, transform;
 }
+.hero-word-accent { color: #FF6A00; }
 
 /* glitch layers — appear on ambient after intro */
 .hero-word::before,

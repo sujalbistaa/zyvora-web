@@ -189,53 +189,52 @@ export default function Hero() {
     if (reduced) {
       gsap.set([logoRef.current, subRef.current, ctasRef.current, statsRef.current], { opacity: 1 })
       wordsRef.current.forEach(w => w && gsap.set(w, { clipPath: 'inset(0 0% 0 0)' }))
-      videoRef.current && gsap.set(videoRef.current, { opacity: 0.22 })
+      videoRef.current && gsap.set(videoRef.current, { opacity: 1 })
       phase.current = 2
     } else {
       const tl = gsap.timeline()
       tlRef.current = tl
 
-      // video breathes in
-      tl.to(videoRef.current, { opacity: 0.22, duration: 2.6, ease: 'power1.inOut' }, 0.5)
+      // video breathes in — opacity 1, overlay handles darkening
+      tl.to(videoRef.current, { opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 0.2)
 
-      // 1.15s → gather
-      tl.call(() => { phase.current = 1 }, [], 1.15)
+      // 0.8s → gather
+      tl.call(() => { phase.current = 1 }, [], 0.8)
 
-      // 2.05s → logo materialises
+      // 1.5s → logo materialises
       tl.fromTo(
         logoRef.current,
         { opacity: 0, scale: 0.82, filter: 'blur(10px)' },
-        { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.65, ease: 'power3.out' },
-        2.05
+        { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.55, ease: 'power3.out' },
+        1.5
       )
 
-      // 2.48s → energy sweep
-      tl.set(sweepRef.current, { opacity: 1 }, 2.44)
-      tl.fromTo(sweepRef.current, { left: '-6px' }, { left: '104%', duration: 0.4, ease: 'power3.in' }, 2.46)
-      tl.set(sweepRef.current, { opacity: 0 }, 2.9)
+      // 1.75s → energy sweep
+      tl.set(sweepRef.current, { opacity: 1 }, 1.72)
+      tl.fromTo(sweepRef.current, { left: '-6px' }, { left: '104%', duration: 0.34, ease: 'power3.in' }, 1.74)
+      tl.set(sweepRef.current, { opacity: 0 }, 2.12)
 
-      // 2.62s → ambient phase
-      tl.call(() => { phase.current = 2 }, [], 2.62)
+      // 1.9s → ambient phase
+      tl.call(() => { phase.current = 2 }, [], 1.9)
 
       // forge words in sequence
       wordsRef.current.forEach((word, i) => {
         if (!word) return
-        const t = 2.52 + i * 0.19
+        const t = 1.82 + i * 0.15
         tl.fromTo(
           word,
           { clipPath: 'inset(0 100% 0 0)', x: -12, skewX: -4 },
-          { clipPath: 'inset(0 0% 0 0)', x: 0, skewX: 0, duration: 0.48, ease: 'power4.out' },
+          { clipPath: 'inset(0 0% 0 0)', x: 0, skewX: 0, duration: 0.4, ease: 'power4.out' },
           t
         )
-        // rattle glitch
-        tl.to(word, { x: 5, duration: 0.03, yoyo: true, repeat: 3, ease: 'none' }, t + 0.48)
-        tl.to(word, { x: 0, duration: 0.06 }, t + 0.62)
+        tl.to(word, { x: 5, duration: 0.025, yoyo: true, repeat: 3, ease: 'none' }, t + 0.4)
+        tl.to(word, { x: 0, duration: 0.05 }, t + 0.5)
       })
 
-      tl.fromTo(subRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 3.28)
-      tl.fromTo(ctasRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.48, ease: 'power3.out' }, 3.5)
-      tl.fromTo(statsRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.44, ease: 'power3.out' }, 3.72)
-      tl.fromTo(scrollRef.current, { opacity: 0 }, { opacity: 1, duration: 0.38 }, 4.3)
+      tl.fromTo(subRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.42, ease: 'power3.out' }, 2.42)
+      tl.fromTo(ctasRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, 2.6)
+      tl.fromTo(statsRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.36, ease: 'power3.out' }, 2.78)
+      tl.fromTo(scrollRef.current, { opacity: 0 }, { opacity: 1, duration: 0.32 }, 3.2)
     }
 
     return () => {
@@ -254,7 +253,7 @@ export default function Hero() {
         autoPlay muted loop playsInline preload="auto"
         poster="/landing-poster.jpg"
         aria-hidden="true"
-        style={{ opacity: 0 }}
+        style={{ opacity: 0, willChange: 'opacity' }}
       >
         <source src="/landing-video.webm" type="video/webm" />
         <source src="/landing-video-fast.mp4" type="video/mp4" />
@@ -279,7 +278,7 @@ export default function Hero() {
             <span
               key={w}
               ref={el => { wordsRef.current[i] = el }}
-              className="hero-word"
+              className={`hero-word${w === 'THE' ? ' hero-word-accent' : ''}`}
               data-text={w}
               style={{ clipPath: 'inset(0 100% 0 0)' }}
             >
