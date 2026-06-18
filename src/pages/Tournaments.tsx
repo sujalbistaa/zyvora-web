@@ -70,7 +70,7 @@ export default function Tournaments() {
         <video
           ref={videoRef}
           className="tnmt-video"
-          autoPlay muted loop playsInline preload="metadata"
+          autoPlay muted loop playsInline preload="auto"
           aria-hidden="true"
         >
           <source src="/montage.mp4" type="video/mp4" />
@@ -181,7 +181,7 @@ export default function Tournaments() {
 
       {/* ── REGISTER CTA ── */}
       <section className="squad-cta" id="register">
-        <video className="squad-cta-video" src="/ff.mp4" autoPlay muted loop playsInline />
+        <video className="squad-cta-video" src="/ff.mp4" autoPlay muted loop playsInline preload="auto" />
         <div className="squad-cta-overlay" />
         <div className="wrap reveal">
           <div className="eyebrow eyebrow-flex center">
