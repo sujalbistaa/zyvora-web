@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Fragment } from 'react'
 import { useReveal } from '../hooks/useReveal'
 import { Arrow } from '../components/Icons'
 
-const TOURNAMENT_DATE = new Date('2026-07-15T10:00:00+05:45')
+const TOURNAMENT_DATE = new Date('2026-07-01T10:00:00+05:45')
 const TOTAL_SLOTS = 16
 const SLOTS_REMAINING = 4
 
@@ -52,11 +52,10 @@ const PRIZES = [
 ]
 
 const SCHEDULE = [
-  { date: 'Jul 10', title: 'Registration Closes', desc: 'Final deadline. Late entries not accepted.' },
-  { date: 'Jul 12', title: 'Team Confirmation', desc: 'Confirmed squads published on Discord.' },
-  { date: 'Jul 13', title: 'Briefing Session', desc: 'Rules walkthrough on Discord voice channel.' },
-  { date: 'Jul 15', title: 'Day 1 — Qualifiers', desc: 'Groups A & B play. Top 8 teams advance.' },
-  { date: 'Jul 16', title: 'Day 2 — Grand Finals', desc: 'Top 8 squads. 3 matches. Winner takes all.' },
+  { date: 'Jun 19', title: 'Registration Opens', desc: 'Slots open. Register your squad on Discord.' },
+  { date: 'Jun 24', title: 'Registration Closes', desc: 'Final deadline. Late entries not accepted.' },
+  { date: 'Jun 26', title: 'Team Confirmation', desc: 'Confirmed squads published on Discord.' },
+  { date: 'Jul 01', title: 'Day 1 — Qualifiers', desc: 'Groups A & B play. Top 8 teams advance.' },
 ]
 
 const RULES = [
@@ -139,7 +138,7 @@ export default function Tournaments() {
 
           <h1 className="tnmt-hero-title reveal">
             Free Fire<br />
-            <span className="tnmt-molten-text">Tournament</span>
+            <span className="tnmt-title-orange">Tournament</span>
           </h1>
 
           <div className="tnmt-stats-bar reveal" role="list" aria-label="Tournament details">
@@ -148,11 +147,11 @@ export default function Tournaments() {
               <span className="tnmt-hstat-lbl">Prize Pool</span>
             </div>
             <div className="tnmt-hstat" role="listitem">
-              <span className="tnmt-hstat-val">Jul 15</span>
+              <span className="tnmt-hstat-val">Jul 01</span>
               <span className="tnmt-hstat-lbl">Tournament Date</span>
             </div>
             <div className="tnmt-hstat" role="listitem">
-              <span className="tnmt-hstat-val">Jul 10</span>
+              <span className="tnmt-hstat-val">Jun 24</span>
               <span className="tnmt-hstat-lbl">Reg. Deadline</span>
             </div>
             <div className="tnmt-hstat" role="listitem">
@@ -183,7 +182,6 @@ export default function Tournaments() {
           </div>
         </div>
 
-        <div className="tnmt-scroll-cue" aria-hidden="true"><span /></div>
       </section>
 
       {/* ── OVERVIEW ── */}
@@ -350,7 +348,7 @@ export default function Tournaments() {
             <span className="molten">One shot.</span>
           </h2>
           <p style={{ color: 'rgba(236,237,233,.55)', maxWidth: '44ch', margin: '0 auto 30px', fontSize: 17 }}>
-            Registration closes <strong style={{ color: 'rgba(236,237,233,.8)' }}>July 10</strong>.
+            Registration closes <strong style={{ color: 'rgba(236,237,233,.8)' }}>June 24</strong>.
             Once the {TOTAL_SLOTS} slots fill, doors close. Don&rsquo;t wait.
           </p>
           <div className="cta-row">

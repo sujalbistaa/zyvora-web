@@ -806,9 +806,7 @@ footer .watermark {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--molten); flex-shrink: 0;
   box-shadow: 0 0 8px rgba(232,64,31,.9);
-  animation: tnmt-pulse 1.8s ease-in-out infinite;
 }
-@keyframes tnmt-pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
 
 .tnmt-hero-org {
   font-family: "Space Mono", monospace; font-size: 11px;
@@ -822,11 +820,7 @@ footer .watermark {
   margin-bottom: 42px;
   text-shadow: 0 4px 48px rgba(0,0,0,.5);
 }
-.tnmt-gradient-text {
-  background: linear-gradient(95deg, var(--molten) 10%, var(--ember) 60%, var(--molten-2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.tnmt-title-orange { color: var(--molten); }
 
 /* hero stats bar — glassmorphism */
 .tnmt-stats-bar {
@@ -881,9 +875,7 @@ footer .watermark {
   font-family: "Archivo", sans-serif; font-weight: 900;
   font-size: clamp(22px, 3.5vw, 42px); color: var(--molten);
   line-height: 1; padding-bottom: 22px; opacity: .65;
-  animation: tnmt-blink 1s step-start infinite;
 }
-@keyframes tnmt-blink { 0%,100%{opacity:.65} 50%{opacity:.1} }
 
 /* hero buttons */
 .tnmt-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
@@ -906,21 +898,6 @@ footer .watermark {
 .tnmt-btn-glass:hover { background: rgba(255,255,255,.14); color: #fff; transform: translateY(-3px); }
 .tnmt-btn-lg { padding: 15px 30px; font-size: 15.5px; }
 
-/* scroll cue */
-.tnmt-scroll-cue {
-  position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2;
-}
-.tnmt-scroll-cue span {
-  display: block; width: 2px; height: 42px; margin: 0 auto;
-  background: linear-gradient(to bottom, rgba(255,255,255,.5), transparent);
-  animation: tnmt-scrollcue 2s ease-in-out infinite;
-}
-@keyframes tnmt-scrollcue {
-  0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
-  49%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
-  50%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
-  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-}
 
 /* ── section shells ── */
 .tnmt-section { padding: 96px 0; position: relative; background: var(--bone); }
