@@ -903,6 +903,55 @@ footer .watermark {
 .tnmt-section { padding: 96px 0; position: relative; background: var(--bone); }
 .tnmt-alt { background: var(--paper); }
 
+/* ── two-column split ── */
+.tnmt-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+}
+.tnmt-split-col > .eyebrow { margin-bottom: 14px; }
+.tnmt-split-col > h2 { margin-bottom: 32px; }
+
+/* ── info list ── */
+.tnmt-info-list { display: flex; flex-direction: column; }
+.tnmt-info-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line);
+}
+.tnmt-info-list .tnmt-info-row:first-child { border-top: 1px solid var(--line); }
+.tnmt-info-label {
+  font-family: "Space Mono", monospace; font-size: 10.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--steel); flex-shrink: 0;
+}
+.tnmt-info-value { font-size: 14.5px; color: var(--ink); font-weight: 600; text-align: right; }
+.tnmt-hot-ink { color: var(--molten) !important; }
+
+/* ── points table ── */
+.tnmt-pts-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  font-size: 14px;
+}
+.tnmt-pts-table thead th {
+  font-family: "Space Mono", monospace; font-size: 10px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--steel);
+  background: var(--bone-2); padding: 11px 16px; text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.tnmt-pts-table tbody tr { border-bottom: 1px solid var(--line); transition: background .15s; }
+.tnmt-pts-table tbody tr:last-child { border-bottom: 0; }
+.tnmt-pts-table tbody tr:hover { background: var(--bone-2); }
+.tnmt-pts-table td {
+  padding: 10px 16px; color: var(--ink-soft);
+}
+.tnmt-pts-table td:last-child { font-weight: 700; color: var(--ink); }
+.tnmt-pts-top td { background: rgba(232,64,31,.04); }
+.tnmt-pts-top td:first-child { color: var(--molten); font-weight: 700; }
+.tnmt-pts-top td:last-child { color: var(--molten); }
+.tnmt-pts-note {
+  font-family: "Space Mono", monospace; font-size: 10px;
+  letter-spacing: .1em; color: var(--steel); margin-top: 12px;
+  border-left: 2px solid var(--molten); padding-left: 10px;
+}
+
 /* ── prize podium ── */
 .tnmt-prize-podium {
   display: grid; grid-template-columns: 1fr 1.15fr 1fr;
@@ -975,65 +1024,13 @@ footer .watermark {
 }
 .tnmt-tl-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
 
-/* ── rules ── */
-.tnmt-rules-layout { display: grid; grid-template-columns: 1fr 320px; gap: 44px; align-items: start; }
-.tnmt-rules-list { list-style: none; }
-.tnmt-rule {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 15px 0; border-bottom: 1px solid var(--line);
-}
-.tnmt-rules-list li:first-child { border-top: 1px solid var(--line); }
-.tnmt-rule-n {
-  font-family: "Space Mono", monospace; font-size: 10.5px;
-  color: var(--molten); flex-shrink: 0; padding-top: 3px; letter-spacing: .1em;
-}
-.tnmt-rule-text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.58; }
-.tnmt-rules-aside-inner {
-  background: var(--paper); border: 1px solid var(--line);
-  border-left: 3px solid var(--molten);
-  border-radius: var(--radius); padding: 26px 22px;
-  position: sticky; top: 108px;
-}
-.tnmt-rules-aside-inner h3 {
-  font-family: "Archivo", sans-serif; font-weight: 800;
-  font-size: 16px; color: var(--ink); margin-bottom: 11px;
-}
-.tnmt-rules-aside-inner p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; }
-.tnmt-rules-aside-sep { height: 1px; background: var(--line); margin: 16px 0; }
-.tnmt-rules-aside-small { font-size: 12.5px !important; color: var(--steel) !important; }
-.tnmt-rules-aside-small strong { color: var(--ink-soft); }
-
-/* ── FAQ ── */
-.tnmt-faq { max-width: 720px; }
-.tnmt-faq-item { border-bottom: 1px solid var(--line); }
-.tnmt-faq-item:first-child { border-top: 1px solid var(--line); }
-.tnmt-faq-trigger {
-  width: 100%; display: flex; justify-content: space-between; align-items: center;
-  gap: 20px; padding: 20px 0; background: none; border: none; cursor: pointer;
-  text-align: left; font-family: "Archivo", sans-serif; font-weight: 700; font-size: 16px;
-  color: var(--ink-soft); transition: color .2s;
-}
-.tnmt-faq-trigger:hover { color: var(--ink); }
-.tnmt-faq-open .tnmt-faq-trigger { color: var(--ink); }
-.tnmt-faq-icon {
-  flex-shrink: 0; width: 26px; height: 26px;
-  border: 1px solid var(--line); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 700; color: var(--molten); line-height: 1;
-  transition: border-color .2s;
-}
-.tnmt-faq-open .tnmt-faq-icon { border-color: var(--molten); }
-.tnmt-faq-answer { padding-bottom: 18px; }
-.tnmt-faq-answer p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
-
 /* ── Tournament responsive ── */
-@media (max-width: 960px) {
-  .tnmt-rules-layout { grid-template-columns: 1fr; }
-  .tnmt-rules-aside-inner { position: static; margin-top: 8px; }
+@media (max-width: 900px) {
+  .tnmt-split { grid-template-columns: 1fr; gap: 52px; }
   .tnmt-prize-podium { grid-template-columns: 1fr; max-width: 380px; border-radius: var(--radius); }
   .tnmt-prize-card { border-right: 0; border-bottom: 1px solid var(--line); }
   .tnmt-prize-card:last-child { border-bottom: 0; }
-  .tnmt-prize-first { order: -1; border-left: 3px solid var(--molten); border-top: 0; }
+  .tnmt-prize-first { order: -1; border-left: 3px solid var(--molten); }
 }
 @media (max-width: 680px) {
   .tnmt-stats-bar { grid-template-columns: 1fr 1fr; }

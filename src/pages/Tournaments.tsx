@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, Fragment } from 'react'
+import { useEffect, useRef, Fragment } from 'react'
+import { useState } from 'react'
 import { useReveal } from '../hooks/useReveal'
 import { Arrow } from '../components/Icons'
 
@@ -27,30 +28,6 @@ function useCountdown(target: Date) {
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
-const OVERVIEW = [
-  {
-    n: '/ 01',
-    title: 'Format',
-    body: 'Battle Royale — Squad (4 members). Two-day event: group qualifiers on Day 1, Grand Finals on Day 2. Top 8 teams advance.',
-  },
-  {
-    n: '/ 02',
-    title: 'Match Structure',
-    body: 'Day 1: 2 matches per group. Day 2: 3 Grand Final matches. Cumulative points across all matches determine the winner.',
-  },
-  {
-    n: '/ 03',
-    title: 'Team Requirements',
-    body: '4 registered members. Minimum account level 30. No roster changes after confirmation. All players must be on ZYVORA Discord.',
-  },
-]
-
-const PRIZES = [
-  { place: '2nd Place', amount: '₹3,000', pct: '30% of pool', cls: 'tnmt-prize-second' },
-  { place: '1st Place', amount: '₹5,000', pct: '50% of pool', cls: 'tnmt-prize-first', top: true },
-  { place: '3rd Place', amount: '₹2,000', pct: '20% of pool', cls: 'tnmt-prize-third' },
-]
-
 const SCHEDULE = [
   { date: 'Jun 19', title: 'Registration Opens', desc: 'Slots open. Register your squad on Discord.' },
   { date: 'Jun 24', title: 'Registration Closes', desc: 'Final deadline. Late entries not accepted.' },
@@ -58,48 +35,41 @@ const SCHEDULE = [
   { date: 'Jul 01', title: 'Day 1 — Qualifiers', desc: 'Groups A & B play. Top 8 teams advance.' },
 ]
 
-const RULES = [
-  'All 4 team members must be registered before the deadline. No substitutions after confirmation.',
-  'Only the registered team leader may communicate with room admins during matches.',
-  'Use of hacks, mods, third-party tools, or exploits results in immediate permanent disqualification.',
-  'Teams must be ready in the lobby 10 minutes before scheduled match time.',
-  'Scoring: Booyah = 12 pts · 2nd = 9 · 3rd = 7 · 4th = 5 · 5th = 3. Each kill = 1 pt.',
-  'Teaming, stream sniping, or unsportsmanlike conduct results in disqualification from all ZYVORA events.',
-  'Room admin decisions are final. No disputes entertained after results are published.',
-  'All participants must be active in the ZYVORA Discord throughout the event.',
+const PRIZES = [
+  { place: '2nd Place', amount: '₹3,000', pct: '30%', cls: 'tnmt-prize-second' },
+  { place: '1st Place', amount: '₹5,000', pct: '50%', cls: 'tnmt-prize-first', top: true },
+  { place: '3rd Place', amount: '₹2,000', pct: '20%', cls: 'tnmt-prize-third' },
 ]
 
-const FAQ = [
-  {
-    q: 'Who can participate?',
-    a: 'Any Free Fire player with a valid in-game ID. Teams must have exactly 4 active members registered before the deadline. Solo or incomplete registrations are not accepted.',
-  },
-  {
-    q: 'How do I register my team?',
-    a: "Click Register Now and join the ZYVORA Discord. Open a ticket in #tournament-registration with your team name, leader contact, and all 4 member IDs. Confirmation within 24 hours.",
-  },
-  {
-    q: 'Is there an entry fee?',
-    a: 'No. ZYVORA tournaments are completely free to enter. The ₹10,000 prize pool is fully sponsored.',
-  },
-  {
-    q: 'What platform is used for coordination?',
-    a: 'All room codes, scheduling, and live updates are distributed via the official ZYVORA Discord. Joining and staying active on Discord is mandatory.',
-  },
-  {
-    q: 'What happens if a player disconnects mid-match?',
-    a: 'Disconnections are not grounds for a replay or pause. Teams are responsible for their own connectivity. Room admins will not delay matches for technical issues.',
-  },
-  {
-    q: 'How are scores verified?',
-    a: 'ZYVORA bots log all kills, placements, and scores in real time directly from the official room. Results are published automatically and are final once posted.',
-  },
+const POINTS = [
+  { place: 'Booyah', pts: 12 },
+  { place: '2nd',    pts: 9  },
+  { place: '3rd',    pts: 8  },
+  { place: '4th',    pts: 7  },
+  { place: '5th',    pts: 6  },
+  { place: '6th',    pts: 5  },
+  { place: '7th',    pts: 4  },
+  { place: '8th',    pts: 3  },
+  { place: '9th',    pts: 2  },
+  { place: '10th',   pts: 1  },
+  { place: '11th',   pts: 0  },
+  { place: '12th',   pts: 0  },
+]
+
+const INFO = [
+  { label: 'Tournament Date',    value: 'July 1, 2026' },
+  { label: 'Registration Open',  value: 'June 19 – June 24' },
+  { label: 'Team Confirmation',  value: 'June 26' },
+  { label: 'Format',             value: 'Battle Royale — Squad (4v4)' },
+  { label: 'Total Slots',        value: `${TOTAL_SLOTS} teams` },
+  { label: 'Slots Remaining',    value: `${SLOTS_REMAINING} of ${TOTAL_SLOTS}` },
+  { label: 'Entry Fee',          value: 'Free' },
+  { label: 'Platform',           value: 'ZYVORA Discord' },
 ]
 
 export default function Tournaments() {
   useReveal()
   const countdown = useCountdown(TOURNAMENT_DATE)
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -176,164 +146,115 @@ export default function Tournaments() {
             <a href="#register" className="btn tnmt-btn-fire tnmt-btn-lg">
               Register Now <Arrow />
             </a>
-            <a href="#rules" className="btn tnmt-btn-glass">
-              View Rules
+            <a href="#schedule" className="btn tnmt-btn-glass">
+              View Schedule
             </a>
           </div>
         </div>
-
       </section>
 
-      {/* ── OVERVIEW ── */}
-      <section className="tnmt-section" id="overview" aria-labelledby="overview-heading">
+      {/* ── INFO + PRIZE POOL ── */}
+      <section className="tnmt-section" id="info">
         <div className="wrap">
-          <div className="sec-head reveal">
-            <div className="eyebrow">
-              <span className="tick" /> Tournament Overview
-            </div>
-            <h2 className="fx-head" id="overview-heading">How it works.</h2>
-          </div>
+          <div className="tnmt-split reveal">
 
-          <div className="manifest reveal">
-            {OVERVIEW.map((item) => (
-              <div className="cap" key={item.n}>
-                <span className="ref">{item.n}</span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
+            {/* left: tournament details */}
+            <div className="tnmt-split-col">
+              <div className="eyebrow eyebrow-flex">
+                <span className="tick" /> Tournament Details
               </div>
-            ))}
+              <h2 className="fx-head">About the event.</h2>
+              <dl className="tnmt-info-list">
+                {INFO.map((item) => (
+                  <div className="tnmt-info-row" key={item.label}>
+                    <dt className="tnmt-info-label">{item.label}</dt>
+                    <dd className={`tnmt-info-value${item.label === 'Slots Remaining' ? ' tnmt-hot-ink' : ''}`}>
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            {/* right: prize distribution */}
+            <div className="tnmt-split-col">
+              <div className="eyebrow eyebrow-flex">
+                <span className="tick" /> Prize Distribution
+              </div>
+              <h2 className="fx-head">Play for the win.</h2>
+              <div className="tnmt-prize-podium">
+                {PRIZES.map((p) => (
+                  <div className={`tnmt-prize-card ${p.cls}`} key={p.place}>
+                    {p.top && <div className="tnmt-prize-badge">Top Prize</div>}
+                    <span className="tnmt-prize-place">{p.place}</span>
+                    <div className="tnmt-prize-amount">{p.amount}</div>
+                    <div className="tnmt-prize-pct">{p.pct} of pool</div>
+                  </div>
+                ))}
+              </div>
+              <p className="tnmt-prize-footer">
+                Total: <strong>₹10,000</strong> — paid out within 72 hrs of completion.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* ── PRIZE POOL ── */}
-      <section className="tnmt-section tnmt-alt" id="prizes" aria-labelledby="prizes-heading">
+      {/* ── SCHEDULE + POINTS TABLE ── */}
+      <section className="tnmt-section tnmt-alt" id="schedule">
         <div className="wrap">
-          <div className="sec-head reveal">
-            <div className="eyebrow">
-              <span className="tick" /> Prize Distribution
-            </div>
-            <h2 className="fx-head" id="prizes-heading">Play for the win.</h2>
-          </div>
+          <div className="tnmt-split reveal">
 
-          <div className="tnmt-prize-podium">
-            {PRIZES.map((p) => (
-              <div className={`tnmt-prize-card ${p.cls} reveal`} key={p.place}>
-                {p.top && <div className="tnmt-prize-badge">Top Prize</div>}
-                <span className="tnmt-prize-place">{p.place}</span>
-                <div className="tnmt-prize-amount">{p.amount}</div>
-                <div className="tnmt-prize-pct">{p.pct}</div>
+            {/* left: timeline */}
+            <div className="tnmt-split-col">
+              <div className="eyebrow eyebrow-flex">
+                <span className="tick" /> Event Schedule
               </div>
-            ))}
-          </div>
-
-          <p className="tnmt-prize-footer reveal">
-            Total prize pool: <strong>₹10,000</strong> — distributed within 72 hours of completion.
-          </p>
-        </div>
-      </section>
-
-      {/* ── SCHEDULE ── */}
-      <section className="tnmt-section" id="schedule" aria-labelledby="schedule-heading">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <div className="eyebrow">
-              <span className="tick" /> Event Schedule
+              <h2 className="fx-head">Key dates.</h2>
+              <ol className="tnmt-timeline" aria-label="Tournament schedule">
+                {SCHEDULE.map((item, i) => (
+                  <li className="tnmt-tl-row" key={i}>
+                    <div className="tnmt-tl-date">{item.date}</div>
+                    <div className="tnmt-tl-spine" aria-hidden="true">
+                      <div className="tnmt-tl-dot" />
+                      {i < SCHEDULE.length - 1 && <div className="tnmt-tl-line" />}
+                    </div>
+                    <div className="tnmt-tl-body">
+                      <h3>{item.title}</h3>
+                      <p>{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </div>
-            <h2 className="fx-head" id="schedule-heading">Key dates.</h2>
-          </div>
 
-          <ol className="tnmt-timeline" aria-label="Tournament schedule">
-            {SCHEDULE.map((item, i) => (
-              <li className="tnmt-tl-row reveal" key={i}>
-                <div className="tnmt-tl-date">{item.date}</div>
-                <div className="tnmt-tl-spine" aria-hidden="true">
-                  <div className="tnmt-tl-dot" />
-                  {i < SCHEDULE.length - 1 && <div className="tnmt-tl-line" />}
-                </div>
-                <div className="tnmt-tl-body">
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ── RULES ── */}
-      <section className="tnmt-section tnmt-alt" id="rules" aria-labelledby="rules-heading">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <div className="eyebrow">
-              <span className="tick" /> Official Rules
-            </div>
-            <h2 className="fx-head" id="rules-heading">Know the rules.</h2>
-          </div>
-
-          <div className="tnmt-rules-layout">
-            <ol className="tnmt-rules-list">
-              {RULES.map((rule, i) => (
-                <li className="tnmt-rule reveal" key={i}>
-                  <span className="tnmt-rule-n" aria-hidden="true">{pad(i + 1)}</span>
-                  <span className="tnmt-rule-text">{rule}</span>
-                </li>
-              ))}
-            </ol>
-
-            <aside className="tnmt-rules-aside reveal" aria-label="Fair play notice">
-              <div className="tnmt-rules-aside-inner">
-                <h3>Fair play is mandatory</h3>
-                <p>
-                  ZYVORA operates fully automated rooms. Every kill, placement, and
-                  action is logged in real time. Any violation results in a permanent
-                  ban from all future ZYVORA events.
-                </p>
-                <div className="tnmt-rules-aside-sep" />
-                <p className="tnmt-rules-aside-small">
-                  Questions? Ask in <strong>#tournament-support</strong> on Discord.
-                </p>
+            {/* right: points table */}
+            <div className="tnmt-split-col">
+              <div className="eyebrow eyebrow-flex">
+                <span className="tick" /> Scoring System
               </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section className="tnmt-section" id="faq" aria-labelledby="faq-heading">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <div className="eyebrow">
-              <span className="tick" /> FAQ
+              <h2 className="fx-head">Points per match.</h2>
+              <table className="tnmt-pts-table" aria-label="Placement points">
+                <thead>
+                  <tr>
+                    <th>Placement</th>
+                    <th>Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {POINTS.map((row) => (
+                    <tr key={row.place} className={row.place === 'Booyah' ? 'tnmt-pts-top' : ''}>
+                      <td>{row.place}</td>
+                      <td>{row.pts}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="tnmt-pts-note">+ 1 point per kill · Points accumulate across all matches</p>
             </div>
-            <h2 className="fx-head" id="faq-heading">Questions answered.</h2>
-          </div>
 
-          <dl className="tnmt-faq" aria-label="Frequently asked questions">
-            {FAQ.map((item, i) => (
-              <div
-                className={`tnmt-faq-item reveal${openFaq === i ? ' tnmt-faq-open' : ''}`}
-                key={i}
-              >
-                <dt>
-                  <button
-                    className="tnmt-faq-trigger"
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                    aria-controls={`faq-a-${i}`}
-                  >
-                    <span>{item.q}</span>
-                    <span className="tnmt-faq-icon" aria-hidden="true">
-                      {openFaq === i ? '−' : '+'}
-                    </span>
-                  </button>
-                </dt>
-                <dd id={`faq-a-${i}`} className="tnmt-faq-answer" hidden={openFaq !== i}>
-                  <p>{item.a}</p>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          </div>
         </div>
       </section>
 
@@ -349,7 +270,7 @@ export default function Tournaments() {
           </h2>
           <p style={{ color: 'rgba(236,237,233,.55)', maxWidth: '44ch', margin: '0 auto 30px', fontSize: 17 }}>
             Registration closes <strong style={{ color: 'rgba(236,237,233,.8)' }}>June 24</strong>.
-            Once the {TOTAL_SLOTS} slots fill, doors close. Don&rsquo;t wait.
+            Once the {TOTAL_SLOTS} slots fill, doors close.
           </p>
           <div className="cta-row">
             <a
@@ -360,16 +281,10 @@ export default function Tournaments() {
             >
               Register on Discord <Arrow />
             </a>
-            <a className="btn btn-ghost" href="#overview"
+            <a
+              className="btn btn-ghost"
+              href="#info"
               style={{ color: 'var(--bone)', borderColor: 'rgba(236,237,233,.3)' }}
-              onMouseOver={e => {
-                (e.currentTarget as HTMLElement).style.background = 'var(--bone)'
-                ;(e.currentTarget as HTMLElement).style.color = 'var(--ink)'
-              }}
-              onMouseOut={e => {
-                (e.currentTarget as HTMLElement).style.background = 'transparent'
-                ;(e.currentTarget as HTMLElement).style.color = 'var(--bone)'
-              }}
             >
               Learn more
             </a>
