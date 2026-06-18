@@ -35,7 +35,7 @@ export function useHeroAudio() {
     ctxRef.current  = ctx
     gainRef.current = gain
 
-    audio.currentTime = 21
+    audio.currentTime = 74
     await audio.play().catch(() => {})
     setLoading(false)
   }, [])
